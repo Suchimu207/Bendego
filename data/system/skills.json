@@ -3882,7 +3882,7 @@
     "estamina": 30,
     "recarga": 2,
   },
-   {
+  {
     "id": 214,
     "nome": "Meteor Slam",
     "elemento": "FOGO",
@@ -3902,4 +3902,139 @@
     "estamina": 60,
     "recarga": 3,
   },
+  {
+    "id": 215,
+    "nome": "Panda Beat",
+    "elemento": "FISICO",
+    "tipo": "OFENSIVA",
+    "alvo": "INIMIGO_UNICO",
+    "efeitos": [],
+    "poder": 25,
+    "precisaoBase": 100,
+    "estamina": 10,
+    "recarga": 0
+  },
+  {
+    "id": 216,
+    "nome": "Zen Fury",
+    "elemento": "FOGO",
+    "tipo": "ESPECIAL",
+    "alvo": "INIMIGO_AREA",
+    "efeitos": [],
+    "poder": 90,
+    "precisaoBase": 0,
+    "estamina": 0,
+    "recarga": 0,
+  },
+  {
+    "id": 217,
+    "nome": "Lunge Punch",
+    "elemento": "NATUREZA",
+    "tipo": "OFENSIVA",
+    "alvo": "INIMIGO_UNICO",
+    "efeitos": [
+	{
+		"efeito": "APPLY_STATUS",
+		"alvo": -1,
+		"valor": 4,
+		"chance": 65,
+		"turnos": 1
+    }
+	],
+    "poder": 30,
+    "precisaoBase": 95,
+    "estamina": 15,
+    "recarga": 0
+  },
+  {
+    "id": 218,
+    "nome": "Eucalyptus Smell",
+    "elemento": "NATUREZA",
+    "tipo": "OFENSIVA",
+    "alvo": "INIMIGO_UNICO",
+    "efeitos": [
+	{
+        "efeito": "HEALING",
+        "alvo": 4,
+        "valor": 20,
+        "chance": 0
+    },
+	],
+    "poder": 25,
+    "precisaoBase": 100,
+    "estamina": 15,
+    "recarga": 0
+  },
+  {
+    "id": 219,
+    "nome": "Nukite",
+    "elemento": "NATUREZA",
+    "tipo": "OFENSIVA",
+    "alvo": "INIMIGO_UNICO",
+    "efeitos": [
+	{
+		"efeito": "APPLY_STATUS",
+		"alvo": -1,
+		"valor": 4,
+		"chance": 100,
+		"turnos": 1
+    }
+	],
+    "poder": 35,
+    "precisaoBase": 95,
+    "estamina": 20,
+    "recarga": 1
+  },
+  {
+    "id": 220,
+    "nome": "Zen Meditation",
+    "elemento": "NATUREZA",
+    "tipo": "DEFENSIVA",
+    "alvo": "USUARIO",
+    "efeitos": [
+	{
+        "efeito": "HEALING",
+        "alvo": -1,
+        "valor": 40,
+        "chance": 0
+    },
+	{
+        "efeito": "CHARGE_ESP",
+        "alvo": -1,
+        "valor": 20,
+        "chance": 0
+    }
+	],
+    "poder": 0,
+    "precisaoBase": 0,
+    "estamina": 15,
+    "recarga": 2
+  },
+  {
+    "id": 221,
+    "nome": "Three Inch Punch",
+    "elemento": "FOGO",
+    "tipo": "OFENSIVA",
+    "alvo": "INIMIGO_UNICO",
+    "efeitos": [
+	{
+		"efeito": "APPLY_STATUS",
+		"alvo": -1,
+		"valor": 2,
+		"chance": 100,
+		"turnos": 3
+    },
+	{
+		"efeito": "APPLY_STATUS",
+		"alvo": -1,
+		"valor": 4,
+		"chance": 100,
+		"turnos": 1
+    }
+	],
+    "poder": 40,
+    "precisaoBase": 95,
+    "estamina": 20,
+    "recarga": 1
+  }
 ]

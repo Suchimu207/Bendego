@@ -69,7 +69,7 @@ public final class Inventory implements GameState{
 	
 	// ==================== INICIALIZAÇÃO ====================
 	
-	public final static void inicializarInventario(){
+	public final static void inicializarInventario(boolean equipe){
         monstrosInventario = new HashMap<Integer, Monsters>();
         monstrosOrdenados = new ArrayList<Monsters>();
         equipeTabela = new EnumMap<>(SlotEquipe.class);
@@ -80,11 +80,11 @@ public final class Inventory implements GameState{
         paginaAtual = 1;
         inicioLista = 1;
         fimLista = 1;
-		montarEquipeInicial();
+		if (equipe) montarEquipeInicial();
     }
 	
 	private static void montarEquipeInicial(){
-		Inventory.adicionarMonstroInventário(1);
+		Inventory.adicionarMonstroInventário(40);
 		Monsters monstro = Inventory.getMonstroInventario(1);
 	}
 	
@@ -336,6 +336,29 @@ public final class Inventory implements GameState{
         }
     }
 	
+	public static Monsters adicionarMonstroSemEquipar(int idEspecie){
+		if (monstrosInventario == null) return null;
+ 
+		Monsters monstroRequerido = MonstersManager.getMonstro(idEspecie);
+		if (monstroRequerido == null) return null;
+ 
+		Monsters novoMonstro = new Monsters(monstroRequerido);
+		monstrosInventario.put(idInventario++, novoMonstro);
+		return novoMonstro;
+	}
+	
+	public static void equiparProximoSlotLivre(Monsters monstro){
+		if (monstro == null || equipeTabela == null) return;
+ 
+		for (SlotEquipe slot : SlotEquipe.values()){
+			if (!equipeTabela.containsKey(slot)){
+				equipeTabela.put(slot, monstro);
+				monstro.setMonstroEquipado(true);
+				break;
+			}
+		}
+	}
+	
     public static void removerMonstroInventário(int id){
         monstroCarregado = monstrosInventario.get(id);
         if (monstroCarregado == null) return;
@@ -420,6 +443,10 @@ public final class Inventory implements GameState{
 	// ==================== OUTROS ====================
 	
 	protected static Map<Integer, Monsters> getMonstrosInventario(){
+        return monstrosInventario;
+    }
+	
+	public static Map<Integer, Monsters> getTodosMonstros(){
         return monstrosInventario;
     }
 	

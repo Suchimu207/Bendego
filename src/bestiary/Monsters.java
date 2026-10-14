@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.UUID;
 
 import java.awt.Color;
 
@@ -121,6 +122,7 @@ public class Monsters {
 	
 	private int idMonstro;
 	private String nomeMonstro;
+	private final String instanceId;
 	private int nivelBase, nivelAtual;
 	private int expAtual;
 	private boolean monstroEquipado, monstroFavorito;
@@ -160,6 +162,7 @@ public class Monsters {
 	
 	public Monsters(int idMonstro, String nomeMonstro, Classes classeAtual, Elementos[] elementosAtuais,
 	Raridades raridadeMonstro, int nivelBase, int forçaBase, int vidaBase, int speedBase, int estaminaBase, int[] traçosIds, int barraEspecialMaximo){
+		this.instanceId = UUID.randomUUID().toString();
 		try{
 			if (idMonstro <= 0){
 				throw new IllegalArgumentException("ID deve ser maior do que 0.");
@@ -215,6 +218,7 @@ public class Monsters {
 	}
 
    public Monsters(Monsters monstroRequerido){
+	   this.instanceId = UUID.randomUUID().toString();
 	   this.idMonstro = monstroRequerido.getIdMonstro();
 	   this.nomeMonstro = monstroRequerido.getNomeMonstro();
 	   this.classeAtual = monstroRequerido.getClasseAtual();
@@ -391,6 +395,19 @@ public class Monsters {
 		}
 	}
 	
+	public void limparHabilidadesAtivas(){
+		skillsAtivas.clear();
+	}
+	
+	public List<Integer> getHabilidadesAtivasIds(){
+		List<Integer> ids = new ArrayList<>();
+		for (int i = 0; i < getQuantidadeMaxSlotsHabilidade(); i++){
+			Skills skill = getHabilidadeAtiva(i);
+			if (skill != null) ids.add(skill.getIdHabilidade());
+		}
+		return ids;
+	}
+	
 	public void desativarRecargas(){
 		for (int i = 0; i < this.getQuantidadeMaxSlotsHabilidade(); i++){
 			Skills skill = this.getHabilidadeAtiva(i);
@@ -497,6 +514,11 @@ public class Monsters {
 	public void setNivelAtual(int nivelAtual){
 		if (nivelAtual < 1) nivelAtual = 1;
 		this.nivelAtual = nivelAtual;
+	}
+	
+	public void setExpAtual(int expAtual){
+		if (expAtual < 0) expAtual = 0;
+		this.expAtual = expAtual;
 	}
 	
 	// ==================== COMBATE ====================
@@ -707,7 +729,11 @@ public class Monsters {
 	public String getNomeMonstro(){
 		return nomeMonstro;
 	}
-
+	
+	public String getInstanceId(){
+		return instanceId;
+	}
+	
 	public Classes getClasseAtual(){
 		return classeAtual;
 	}

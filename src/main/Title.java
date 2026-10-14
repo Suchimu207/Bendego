@@ -4,6 +4,8 @@ import static main.Terminal.mudarEstado;
 
 import main.inventory.Inventory;
 
+import manager.SaveManager;
+
 import util.Audio;
 import util.CommandManager;
 import util.GameState;
@@ -72,13 +74,17 @@ public final class Title implements GameState{
 		if (Input.getCursorY() == 1){
 			Audio.tocarSom("NewGame", 0.1f);
 			Player.setarJogador();
-			Inventory.inicializarInventario();
+			Inventory.inicializarInventario(true);
 			Grapchics.limpaTela();
 			mudarEstado(new Maps());
         }else if (Input.getCursorY() == 2){
-			Audio.tocarSom("Confirm", 0.1f);
-			Grapchics.limpaTela();
-			mudarEstado(new Maps());
+			if (SaveManager.existeSave()){
+				if (SaveManager.carregar()){
+					Audio.tocarSom("Confirm", 0.1f);
+					Grapchics.limpaTela();
+					mudarEstado(new Maps());
+				}
+			}
 		}else if (Input.getCursorY() == 3){
 			CommandManager.parar();
 			System.exit(0); // Provisório.
@@ -109,7 +115,9 @@ public final class Title implements GameState{
 		if (Input.getCursorY() == 2){
 			Grapchics.desenhaCentroTTF(">>Continuar<<", 20, Grapchics.AMARELO_CLARO);
 		}else{
-			Grapchics.desenhaCentroTTF("Continuar", 20, Grapchics.BRANCO_CLARO);
+			if (SaveManager.existeSave()){
+				Grapchics.desenhaCentroTTF("Continuar", 20, Grapchics.BRANCO_CLARO);
+			}else Grapchics.desenhaCentroTTF("Continuar", 20, Grapchics.PRETO_CLARO);
 		}
 		
 		if (Input.getCursorY() == 3){

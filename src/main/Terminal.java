@@ -128,6 +128,7 @@ public final class Terminal implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e){
 		int tecla = e.getKeyCode();
+		boolean teclaRepetida = teclasPressionadas.contains(tecla);
 		teclasPressionadas.add(tecla);
 		
 		switch (tecla){
@@ -135,6 +136,8 @@ public final class Terminal implements KeyListener {
 			Debug.setAtivaTelaDebug(!Debug.isAtivaTelaDebug());
 			break;
 		}
+		
+		if (teclaRepetida) return;
 		
 		if (estadoAtual != null){
 			estadoAtual.recebeComando(tecla, teclasPressionadas);

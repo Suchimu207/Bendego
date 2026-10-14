@@ -4,7 +4,7 @@
 	"nome": "MangaSelvagem",
     "inimigos": [
 	  {
-        "idMonstro": 2,
+        "idMonstro": 1,
         "nivel": 1
       }
     ],
@@ -20,7 +20,7 @@
         "nivel": 1
       },
 	  {
-        "idMonstro": 16,
+        "idMonstro": 15,
         "nivel": 1
       }
     ],
@@ -32,11 +32,11 @@
 	"nome": "The_Rogui",
     "inimigos": [
 	  {
-        "idMonstro": 12,
+        "idMonstro": 7,
         "nivel": 1
       },
 	  {
-        "idMonstro": 4,
+        "idMonstro": 21,
         "nivel": 2
       }
     ],
@@ -48,15 +48,15 @@
 	"nome": "Silvestre_Estaladone",
     "inimigos": [
 	  {
-        "idMonstro": 18,
+        "idMonstro": 13,
         "nivel": 2
       },
 	  {
-        "idMonstro": 7,
+        "idMonstro": 17,
         "nivel": 2
       },
 	  {
-        "idMonstro": 6,
+        "idMonstro": 9,
         "nivel": 3
       }
     ],
@@ -108,19 +108,203 @@
 	"nome": "EXX_NoobMaster_EXX",
     "inimigos": [
 	  {
-        "idMonstro": 21,
+        "idMonstro": 6,
         "nivel": 4
       },
 	  {
-        "idMonstro": 14,
+        "idMonstro": 23,
         "nivel": 5
       },
 	  {
-        "idMonstro": 21,
+        "idMonstro": 7,
         "nivel": 4
       }
     ],
     "exp": 300,
+    "ouro": 100
+  },
+  {
+	"id": 8,
+	"nome": "[...]",
+    "inimigos": [
+	  {
+        "idMonstro": 2,
+        "nivel": 3
+      },
+	  {
+        "idMonstro": 2,
+        "nivel": 3
+      }
+    ],
+    "exp": 150,
+    "ouro": 20
+  },
+  {
+	"id": 9,
+	"nome": "[...]",
+    "inimigos": [
+	  {
+        "idMonstro": 20,
+        "nivel": 4
+      },
+	  {
+        "idMonstro": 38,
+        "nivel": 5
+      }
+    ],
+    "exp": 150,
+    "ouro": 30
+  },
+  {
+	"id": 10,
+	"nome": "[...]",
+    "inimigos": [
+	  {
+        "idMonstro": 2,
+        "nivel": 4
+      },
+	  {
+        "idMonstro": 22,
+        "nivel": 5
+      },
+	  {
+        "idMonstro": 2,
+        "nivel": 4
+      },
+    ],
+    "exp": 150,
+    "ouro": 50
+  },
+  {
+	"id": 11,
+	"nome": "[...]",
+    "inimigos": [
+	  {
+        "idMonstro": 10,
+        "nivel": 5
+      },
+	  {
+        "idMonstro": 19,
+        "nivel": 5
+      },
+	  {
+        "idMonstro": 12,
+        "nivel": 5
+      },
+    ],
+    "exp": 200,
+    "ouro": 50
+  },
+  {
+	"id": 12,
+	"nome": "[...]",
+    "inimigos": [
+	  {
+        "idMonstro": 38,
+        "nivel": 5
+      },
+	  {
+        "idMonstro": 25,
+        "nivel": 7
+      },
+	  {
+        "idMonstro": 19,
+        "nivel": 5
+      },
+    ],
+    "exp": 450,
+    "ouro": 100
+  },
+  {
+	"id": 13,
+	"nome": "[...]",
+    "inimigos": [
+	  {
+        "idMonstro": 4,
+        "nivel": 3
+      },
+	  {
+        "idMonstro": 4,
+        "nivel": 3
+      }
+    ],
+    "exp": 150,
+    "ouro": 20
+  },
+  {
+	"id": 14,
+	"nome": "[...]",
+    "inimigos": [
+	  {
+        "idMonstro": 16,
+        "nivel": 4
+      },
+	  {
+        "idMonstro": 35,
+        "nivel": 5
+      }
+    ],
+    "exp": 150,
+    "ouro": 30
+  },
+  {
+	"id": 15,
+	"nome": "[...]",
+    "inimigos": [
+	  {
+        "idMonstro": 3,
+        "nivel": 4
+      },
+	  {
+        "idMonstro": 34,
+        "nivel": 5
+      },
+	  {
+        "idMonstro": 3,
+        "nivel": 4
+      },
+    ],
+    "exp": 150,
+    "ouro": 50
+  },
+  {
+	"id": 16,
+	"nome": "[...]",
+    "inimigos": [
+	  {
+        "idMonstro": 30,
+        "nivel": 5
+      },
+	  {
+        "idMonstro": 26,
+        "nivel": 5
+      },
+	  {
+        "idMonstro": 4,
+        "nivel": 5
+      },
+    ],
+    "exp": 200,
+    "ouro": 50
+  },
+  {
+	"id": 17,
+	"nome": "[...]",
+    "inimigos": [
+	  {
+        "idMonstro": 16,
+        "nivel": 5
+      },
+	  {
+        "idMonstro": 14,
+        "nivel": 7
+      },
+	  {
+        "idMonstro": 35,
+        "nivel": 5
+      },
+    ],
+    "exp": 450,
     "ouro": 100
   }
 ]

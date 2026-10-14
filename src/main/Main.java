@@ -7,6 +7,8 @@ import manager.*;
 import util.CommandManager;
 import util.Debug;
 
+import save.Version;
+
 import world.Maps;
 
 import asciiPanel.AsciiFont;
@@ -43,10 +45,12 @@ public final class Main {
 			}
 		}
 	}
-    public static void main(String[] args) {
+	
+	static{Game.carregarGameJson();}
+	private final static Version versãoAtual = new Version(Game.gameJson.getString("version"));
+	
+    public static void main(String[] args){
 		Debug.limpaPrompt();
-		
-		Game.carregarGameJson();
 		
 		String mapaInicial = "Lobby";
 		boolean rodandoJogo = true;
@@ -117,4 +121,8 @@ public final class Main {
 		
 		//===
     }
+	
+	public static Version getGameVersion(){
+		return Main.versãoAtual;
+	}
 }

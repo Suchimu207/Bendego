@@ -9,6 +9,7 @@ import main.Title;
 
 import manager.MapsManager;
 import manager.NPCManager;
+import manager.SaveManager;
 
 import modes.arena.ArenaMode;
 
@@ -67,33 +68,18 @@ public final class Maps implements GameState{
     public void recebeComando(int tecla, Set<Integer> teclasPressionadas){
 		switch (tecla){
 			case KeyEvent.VK_A:
-			case KeyEvent.VK_LEFT:
-				teclaEsquerda();
-				break;
+			case KeyEvent.VK_LEFT: teclaEsquerda(); break;
 			case KeyEvent.VK_D:
-			case KeyEvent.VK_RIGHT:
-				teclaDireita();
-				break;
+			case KeyEvent.VK_RIGHT: teclaDireita(); break;
 			case KeyEvent.VK_W:
-			case KeyEvent.VK_UP:
-				teclaCima();
-				break;
+			case KeyEvent.VK_UP: teclaCima(); break;
 			case KeyEvent.VK_S:
-			case KeyEvent.VK_DOWN:
-				teclaBaixo();
-				break;
-			case KeyEvent.VK_ENTER:
-				teclaEnter();
-				break;
-			case KeyEvent.VK_SHIFT:
-				teclaShift();
-				break;
-			case KeyEvent.VK_E:
-				teclaInventário();
-				break;
-			case KeyEvent.VK_ESCAPE:
-				teclaEsc();
-				break;
+			case KeyEvent.VK_DOWN: teclaBaixo(); break;
+			case KeyEvent.VK_ENTER: teclaEnter(); break;
+			case KeyEvent.VK_SHIFT: teclaShift(); break;
+			case KeyEvent.VK_E: teclaInventário(); break;
+			case KeyEvent.VK_Q: teclaSalvar(); break;
+			case KeyEvent.VK_ESCAPE: teclaEsc(); break;
 		}
 	}
 	
@@ -136,6 +122,10 @@ public final class Maps implements GameState{
 	
 	private void teclaInventário(){
 		mudarEstado(new Inventory());
+	}
+	
+	private void teclaSalvar(){
+		SaveManager.salvar();
 	}
 	
 	private void teclaEsc(){
@@ -212,8 +202,9 @@ public final class Maps implements GameState{
 	private static void desenhaInfo(){
 		desenhaMapaNome();
 		
-		Grapchics.desenhaTTF("ESC: Título",0,36, Grapchics.PRETO_CLARO);
-		Grapchics.desenhaTTF("E: Inventário",0,37, Grapchics.PRETO_CLARO);
+		Grapchics.desenhaTTF("ESC: Título",0,35, Grapchics.PRETO_CLARO);
+		Grapchics.desenhaTTF("E: Inventário",0,36, Grapchics.PRETO_CLARO);
+		Grapchics.desenhaTTF("Q: Salvar progresso",0,37, Grapchics.PRETO_CLARO);
 		Grapchics.desenhaTTF("Enter: Interagir",0,38, Grapchics.PRETO_CLARO);
 		Grapchics.desenhaTTF("Ouro: "+Player.getOuro(),0,39, Grapchics.BRANCO_CLARO);
 	}

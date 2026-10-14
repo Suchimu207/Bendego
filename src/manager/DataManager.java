@@ -27,6 +27,9 @@ public final class DataManager {
 		
 		TroopManager.carregarTropas();
 		System.out.println("");
+		
+		ArenaModeManager.carregarTorneios();
+		System.out.println("");
     }
 	
 	//===

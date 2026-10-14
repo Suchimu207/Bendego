@@ -10,6 +10,7 @@ import main.inventory.Inventory;
 import main.Player;
 import main.Shop;
 
+import manager.ArenaModeManager;
 import manager.MonstersManager;
 
 import util.Audio;
@@ -29,6 +30,8 @@ import java.util.Map;
 import java.util.Random;
 
 import java.awt.event.KeyEvent;
+
+import java.awt.Color;
 
 public class ArenaMode implements GameState{
 	private enum SubEstadosArena{
@@ -62,53 +65,11 @@ public class ArenaMode implements GameState{
 	
 	private static boolean batalha = false;
 	
-	
     public ArenaMode(){
 		monstroDesbloqueado = null;
 		buffsAtuais = new ArrayList<Effects>();
 		rodadaBuff = 0;
-		setarTorneios();
-		setarBônus();
     }
-	
-	// ==================== INICIALIZAÇÃO ====================
-	
-	private void setarTorneios(){
-		if (torneios == null){
-			torneios = new LinkedHashMap<>();
-			
-			torneios.put(1, 
-			new Tournament("Newbies´s Tournament", new int[]{1, 2, 3, 4, 5, 6, 7}, 
-			14)
-			);
-			
-			System.out.println(">>Torneios setados: "+torneios.size());
-		}
-	}
-	
-	private void setarBônus(){
-		if (buffs != null) return;
-		
-		buffs = new ArrayList<Effects>();
-		
-		Effects statusRegen = new Effects("APPLY_STATUS", 1, 8, 100, 3);
-		buffs.add(statusRegen);
-		
-		Effects statusRegenSta = new Effects("APPLY_STATUS", 1, 13, 100, 3);
-		buffs.add(statusRegenSta);
-		
-		Effects statusRapidez = new Effects("APPLY_STATUS", 1, 25, 100, 3);
-		buffs.add(statusRapidez);
-		
-		Effects statusDano25 = new Effects("APPLY_STATUS", 1, 26, 100, 3);
-		buffs.add(statusDano25);
-		
-		Effects statusDano50 = new Effects("APPLY_STATUS", 1, 27, 100, 2);
-		buffs.add(statusDano50);
-		
-		Effects statusDano100 = new Effects("APPLY_STATUS", 1, 28, 100, 1);
-		buffs.add(statusDano100);
-	}
 	
 	// ==================== ESTADO ====================
 	
@@ -165,23 +126,28 @@ public class ArenaMode implements GameState{
 	private void teclaCima(){
 		if (subEstadoAtual == null){
 			Input.decrementarCursorY();
+			torneioSelecionado = -1;
 		}
 	}
 	
 	private void teclaBaixo(){
 		if (subEstadoAtual == null){
 			Input.incrementarCursorY();
+			torneioSelecionado = -1;
 		}
 	}
 	
 	private void teclaEnter(){
 		if (subEstadoAtual == null){
-            if (torneioSelecionado > 0 && torneios.containsKey(torneioSelecionado)){
-                this.torneioAtual = torneios.get(torneioSelecionado);
-                subEstadoAtual = SubEstadosArena.TORNEIO;
-				Input.resetarCursor();
-				ArenaMode.rodadaAtual = 1;
-				Input.setCursorY(rodadaAtual);
+            if (torneioSelecionado > 0 && ArenaModeManager.getTorneios().containsKey(torneioSelecionado)){
+				Tournament torneio = ArenaModeManager.getTorneio(torneioSelecionado);
+				if (Player.getTorneiosVencidos() >= torneio.getTorneiosRequeridos()){
+					this.torneioAtual = ArenaModeManager.getTorneio(torneioSelecionado);
+					subEstadoAtual = SubEstadosArena.TORNEIO;
+					Input.resetarCursor();
+					ArenaMode.rodadaAtual = 1;
+					Input.setCursorY(rodadaAtual);
+				}
             }
         }else if (subEstadoAtual == SubEstadosArena.TORNEIO){
 			if (rodadaBuff == 3){
@@ -221,6 +187,7 @@ public class ArenaMode implements GameState{
 	// ==================== DESENHO ====================
 	
 	private static void desenhaTorneios(){
+		torneios = ArenaModeManager.getTorneios();
 		if (torneios == null || torneios.size() <= 0) return;
 		
 		int linhaAtual = 0;
@@ -240,19 +207,25 @@ public class ArenaMode implements GameState{
             Tournament torneio = entry.getValue();
 			
 			int torneioFinalizado = torneio.isConcluido() ? 15 : 0;
+			boolean desbloqueado = Player.getTorneiosVencidos() >= torneio.getTorneiosRequeridos();
 			
             if (Input.getCursorY() == linhaAtual){
-                Grapchics.desenhaHibrido(torneio.getNomeTorneio(), torneioFinalizado, 1, linhaAtual++, Grapchics.AMARELO_CLARO);
-				torneioSelecionado = indice;
+				if (desbloqueado){
+					Grapchics.desenhaHibrido(torneio.getNomeTorneio(), torneioFinalizado, 1, linhaAtual++, Grapchics.AMARELO_CLARO);
+					torneioSelecionado = indice;
+				}else{
+					Grapchics.desenhaHibrido(torneio.getNomeTorneio(), torneioFinalizado, 1, linhaAtual++, Grapchics.AMARELO_CLARO);
+				}
             }else{
-				Grapchics.desenhaHibrido(torneio.getNomeTorneio(), torneioFinalizado, 0, linhaAtual++, Grapchics.BRANCO_CLARO);
+				Color cor = desbloqueado ? Grapchics.BRANCO_CLARO : Grapchics.PRETO_CLARO;
+				Grapchics.desenhaHibrido(torneio.getNomeTorneio(), torneioFinalizado, 0, linhaAtual++, cor);
             }
         }
 		
 		linhaFim = linhaAtual;
 		
 		Grapchics.desenhaTela("____________________",0,linhaAtual++, Grapchics.PRETO_CLARO);
-		linhaAtual += 25;
+		linhaAtual += 10;
 		
 		Grapchics.desenhaCentroTTF("Equipe:",linhaAtual++, Grapchics.BRANCO_CLARO);
 		Grapchics.desenhaTela("____________________",0,linhaAtual++, Grapchics.PRETO_CLARO);
@@ -271,19 +244,26 @@ public class ArenaMode implements GameState{
 		
 		Grapchics.desenhaTela("____________________",0,linhaAtual++, Grapchics.PRETO_CLARO);
 		
+		if (Input.getCursorY() == 0) Input.setCursorY(linhaInicio);
 		if (Input.getCursorY() < linhaInicio){
-			Input.setCursorY(linhaFim);
-		}else if (Input.getCursorY() > linhaFim){
+			Input.setCursorY(linhaFim-1);
+		}else if (Input.getCursorY() > linhaFim-1){
 			Input.setCursorY(linhaInicio);
-		}else if (Input.getCursorY() == 0) Input.setCursorY(linhaInicio);
+		}
 	}
 	
 	private static void desenhaTorneioAtual(){
 		if (torneioAtual == null) return;
 		
         int linhaAtual = 0;
+		int tamanhoNomeTorneio = torneioAtual.getNomeTorneio().length();
+		String linhaDinâmica = "_".repeat(tamanhoNomeTorneio);
 		
+		Grapchics.desenhaCentro(linhaDinâmica, linhaAtual++, Grapchics.PRETO_CLARO);
         Grapchics.desenhaCentroTTF(torneioAtual.getNomeTorneio(), linhaAtual++, Grapchics.BRANCO_CLARO);
+		Grapchics.desenhaCentro(linhaDinâmica, linhaAtual++, Grapchics.PRETO_CLARO);
+		
+		linhaAtual++;
 		
         Grapchics.desenhaTTF("E: Voltar", 0, linhaAtual++, Grapchics.PRETO_CLARO);
         Grapchics.desenhaTTF("Enter: Iniciar Rodada", 0, linhaAtual++, Grapchics.PRETO_CLARO);
@@ -336,11 +316,12 @@ public class ArenaMode implements GameState{
 	// ==================== MÉTODOS AUXILIARES ====================
 	
 	private static void adicionarBuff(){
-		if (buffs == null || buffs.size() <= 0) return;
+		List<Effects> buffsGlobais = ArenaModeManager.getBuffs();
+		if (buffsGlobais == null || buffsGlobais.size() <= 0) return;
 		
-		for (int i = 0; i <= buffs.size(); i++){
-			int id = random.nextInt(buffs.size()-1);
-			Effects efeito = buffs.get(id);
+		for (int i = 0; i <= buffsGlobais.size(); i++){
+			int id = random.nextInt(buffsGlobais.size());
+			Effects efeito = buffsGlobais.get(id);
 			if (!buffsAtuais.contains(efeito)){
 				buffsAtuais.add(efeito);
 				break;
@@ -362,6 +343,7 @@ public class ArenaMode implements GameState{
 				
 				monstroDesbloqueado = MonstersManager.getMonstro(idRecompensa);
 				
+				Player.registrarTorneioVencido();
 				torneioAtual.setConcluido(true);
 			}
 			if (buffsAtuais != null) buffsAtuais.clear();

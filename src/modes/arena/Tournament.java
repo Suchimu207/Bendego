@@ -8,12 +8,14 @@ import java.util.Map;
 
 public class Tournament {
 	private final String nomeTorneio;
+	private final int torneiosRequeridos;
     private final Map<Integer, Troop> batalhas;
 	private final int recompensaMonstro;
 	private boolean concluido;
 	
-    protected Tournament(String nomeTorneio, int[] tropas, int recompensaMonstro){
+    public Tournament(String nomeTorneio, int torneiosRequeridos, int[] tropas, int recompensaMonstro){
 		this.nomeTorneio = nomeTorneio;
+		this.torneiosRequeridos = torneiosRequeridos;
         this.batalhas = new LinkedHashMap<>();
 		this.recompensaMonstro = recompensaMonstro;
 		this.concluido = false;
@@ -34,6 +36,10 @@ public class Tournament {
 	protected String getNomeTorneio(){
         return this.nomeTorneio;
     }
+	
+	protected int getTorneiosRequeridos(){
+		return this.torneiosRequeridos;
+	}
 	
     protected Troop getBatalha(int chave){
         return this.batalhas.get(chave);

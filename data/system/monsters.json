@@ -148,7 +148,7 @@
     ],
     "forcaBase": 9,
     "vidaBase": 27,
-    "velocidadeBase": 16,
+    "velocidadeBase": 14,
     "tracos": [8],
 	"energia": 60
   },
@@ -993,6 +993,34 @@
   },
   {
     "id": 40,
+    "nome": "Pandaken",
+    "classe": "GENERALISTA",
+    "elementos": ["NATUREZA", "FOGO"],
+    "raridade": "RARO",
+    "habilidades": [
+      { "id": 216, "nivel": 1 },
+      { "id": 215, "nivel": 1 },
+      { "id": 3, "nivel": 1 },
+	  { "id": 15, "nivel": 1 },
+	  { "id": 217, "nivel": 4 },
+	  { "id": 16, "nivel": 7 },
+	  { "id": 218, "nivel": 10 },
+	  { "id": 167, "nivel": 15 },
+	  { "id": 219, "nivel": 20 },
+	  { "id": 7, "nivel": 25 },
+	  { "id": 220, "nivel": 30 },
+	  { "id": 22, "nivel": 35 },
+	  { "id": 158, "nivel": 35 },
+	  { "id": 221, "nivel": 40 }
+    ],
+    "forcaBase": 15,
+    "vidaBase": 27,
+    "velocidadeBase": 10,
+    "tracos": [2],
+	"energia": 120
+  },
+  {
+    "id": 41,
     "nome": "Humungousaur",
     "classe": "TANQUE",
     "elementos": ["TERRA", "TERRA"],
@@ -1017,7 +1045,7 @@
     "tracos": [11]
   },
   {
-    "id": 41,
+    "id": 42,
     "nome": "Four-arms",
     "classe": "TANQUE",
     "elementos": ["FISICO", "FISICO"],
@@ -1045,7 +1073,7 @@
 	"energia": 90
   },
   {
-    "id": 42,
+    "id": 43,
     "nome": "Heatblast",
     "classe": "ATACANTE",
     "elementos": ["TERRA", "FOGO"],

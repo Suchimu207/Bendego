@@ -39,7 +39,11 @@ public final class BattlePreparation {
 		
 		Grapchics.desenhaCentroTTF("Batalha",0, Grapchics.BRANCO_CLARO);
 		Grapchics.desenhaTTF("E: Voltar", 0,linhaAtual++, Grapchics.PRETO_CLARO);
-		Grapchics.desenhaTTF("Q: Iniciar batalha",0,linhaAtual++, Grapchics.PRETO_CLARO);
+		
+		if (Battle.isEquipeSetada()){
+			Grapchics.desenhaTTF("Q: Iniciar batalha",0,linhaAtual++, Grapchics.PRETO_CLARO);
+		}
+		
 		Grapchics.desenhaTTF("Enter: Escolher integrante",0,linhaAtual++, Grapchics.PRETO_CLARO);		
 		Grapchics.desenhaTTF("Oponente: "+tropaCarregada.getNomeTropa(),0,linhaAtual++, Grapchics.BRANCO_CLARO);
 		Grapchics.desenhaTela("____________________",0,linhaAtual++, Grapchics.PRETO_CLARO);

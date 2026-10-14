@@ -275,7 +275,7 @@ public final class Battle implements GameState{
 		}
 	}
 	
-	private static boolean isEquipeSetada(){
+	protected static boolean isEquipeSetada(){
 		if (monstroSlotsAtivos == null) return false;
 		
 		for (Monsters monstro : monstroSlotsAtivos){
