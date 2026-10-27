@@ -4036,5 +4036,332 @@
     "precisaoBase": 95,
     "estamina": 20,
     "recarga": 1
+  },
+  {
+    "id": 222,
+    "nome": "Refresh",
+    "elemento": "NATUREZA",
+    "tipo": "DEFENSIVA",
+    "alvo": "ALIADO_UNICO",
+    "efeitos": [
+	{
+        "efeito": "HEALING",
+        "alvo": -1,
+        "valor": 25
+    },
+	{
+		"efeito": "APPLY_STATUS",
+		"alvo": -1,
+		"valor": 33,
+		"chance": 100,
+		"turnos": 3
+    }
+	],
+    "poder": 0,
+    "precisaoBase": 0,
+    "estamina": 30,
+    "recarga": 2
+  },
+  {
+    "id": 223,
+    "nome": "Mother Earth",
+    "elemento": "NATUREZA",
+    "tipo": "OFENSIVA",
+    "alvo": "INIMIGO_AREA",
+    "efeitos": [
+	{
+		"efeito": "APPLY_STATUS",
+		"alvo": -1,
+		"valor": 1,
+		"chance": 95,
+		"turnos": 3
+    },
+	{
+		"efeito": "APPLY_STATUS",
+		"alvo": 1,
+		"valor": 33,
+		"chance": 100,
+		"turnos": 5
+    }
+	],
+    "poder": 25,
+    "precisaoBase": 100,
+    "estamina": 40,
+    "recarga": 2
+  },
+  {
+    "id": 224,
+    "nome": "Renew",
+    "elemento": "NATUREZA",
+    "tipo": "DEFENSIVA",
+    "alvo": "ALIADO_UNICO",
+    "efeitos": [
+	{
+        "efeito": "HEALING",
+        "alvo": -1,
+        "valor": 10
+    },
+	{
+		"efeito": "APPLY_STATUS",
+		"alvo": -1,
+		"valor": 33,
+		"chance": 100,
+		"turnos": 1
+    }
+	],
+    "poder": 0,
+    "precisaoBase": 0,
+    "estamina": 15,
+    "recarga": 1
+  },
+  {
+    "id": 225,
+    "nome": "Cursed Harvest",
+    "elemento": "TREVAS",
+    "tipo": "ESPECIAL",
+    "alvo": "INIMIGO_AREA",
+    "efeitos": [
+	{
+        "efeito": "APPLY_STATUS",
+        "alvo": -1,
+        "valor": 1,
+        "chance": 100,
+		"turnos": 3
+    },
+	{
+        "efeito": "APPLY_STATUS",
+        "alvo": -1,
+        "valor": 6,
+        "chance": 100,
+		"turnos": 3
+    }
+	],
+    "poder": 60,
+    "precisaoBase": 0,
+    "estamina": 0,
+    "recarga": 0
+  },
+  {
+    "id": 226,
+    "nome": "Pumpkin Head",
+    "elemento": "NATUREZA",
+    "tipo": "OFENSIVA",
+    "alvo": "INIMIGO_UNICO",
+    "efeitos": [
+	{
+        "efeito": "APPLY_STATUS",
+        "alvo": -1,
+        "valor": 4,
+        "chance": 100,
+		"turnos": 1
+    }
+	],
+    "poder": 40,
+    "precisaoBase": 95,
+    "estamina": 20,
+    "recarga": 0
+  },
+  {
+    "id": 227,
+    "nome": "Pumpkin Seeds",
+    "elemento": "NATUREZA",
+    "tipo": "OFENSIVA",
+    "alvo": "INIMIGO_AREA",
+    "efeitos": [
+	{
+        "efeito": "REMOVE_PV",
+        "alvo": -1,
+        "valor": 10
+    }
+	],
+    "poder": 0,
+    "precisaoBase": 95,
+    "estamina": 20,
+    "recarga": 1
+  },
+  {
+    "id": 228,
+    "nome": "Reap",
+    "elemento": "TREVAS",
+    "tipo": "OFENSIVA",
+    "alvo": "INIMIGO_UNICO",
+    "efeitos": [
+	{
+        "efeito": "REMOVE_PV",
+        "alvo": -1,
+        "valor": 25
+    }
+	],
+    "poder": 0,
+    "precisaoBase": 95,
+    "estamina": 30,
+    "recarga": 2
+  },
+  {
+    "id": 229,
+    "nome": "Caltrop Grenade",
+    "elemento": "FISICO",
+    "tipo": "OFENSIVA",
+    "alvo": "INIMIGO_AREA",
+    "efeitos": [
+	{
+        "efeito": "APPLY_STATUS",
+        "alvo": -1,
+        "valor": 12,
+        "chance": 100,
+		"turnos": 3
+    }
+	],
+    "poder": 30,
+    "precisaoBase": 95,
+    "estamina": 25,
+    "recarga": 1
+  },
+  {
+    "id": 230,
+    "nome": "Torpedo Blast",
+    "elemento": "METAL",
+    "tipo": "OFENSIVA",
+    "alvo": "INIMIGO_UNICO",
+    "efeitos": [
+	{
+        "efeito": "APPLY_STATUS",
+        "alvo": -1,
+        "valor": 2,
+        "chance": 65,
+		"turnos": 3
+    },
+	{
+        "efeito": "ACTION_DELAY",
+        "alvo": -1,
+        "valor": 25,
+    }
+	],
+    "poder": 20,
+    "precisaoBase": 95,
+    "estamina": 25,
+    "recarga": 1
+  },
+  {
+    "id": 231,
+    "nome": "Dark Windstorm",
+    "elemento": "TREVAS",
+    "tipo": "NEUTRO",
+    "alvo": "INIMIGO_AREA",
+    "efeitos": [
+	{
+        "efeito": "APPLY_STATUS",
+        "alvo": -1,
+        "valor": 5,
+        "chance": 100,
+		"turnos": 3
+    },
+	{
+        "efeito": "APPLY_STATUS",
+        "alvo": -1,
+        "valor": 6,
+        "chance": 100,
+		"turnos": 3
+    }
+	],
+    "poder": 0,
+    "precisaoBase": 100,
+    "estamina": 40,
+    "recarga": 5
+  },
+  {
+    "id": 232,
+    "nome": "Silent Town",
+    "elemento": "TREVAS",
+    "tipo": "OFENSIVA",
+    "alvo": "INIMIGO_AREA",
+    "efeitos": [],
+    "poder": 35,
+    "precisaoBase": 95,
+    "estamina": 40,
+    "recarga": 2
+  },
+  {
+    "id": 233,
+    "nome": "Metal Claws",
+    "elemento": "METAL",
+    "tipo": "OFENSIVA",
+    "alvo": "INIMIGO_UNICO",
+    "efeitos": [
+	{
+        "efeito": "APPLY_STATUS",
+        "alvo": -1,
+        "valor": 29,
+        "chance": 65,
+		"turnos": 3
+    }
+	],
+    "poder": 30,
+    "precisaoBase": 95,
+    "estamina": 15,
+    "recarga": 0
+  },
+  {
+    "id": 234,
+    "nome": "Reload Weapons",
+    "elemento": "METAL",
+    "tipo": "DEFENSIVA",
+    "alvo": "USUARIO",
+    "efeitos": [
+	{
+        "efeito": "APPLY_STATUS",
+        "alvo": -1,
+        "valor": 27,
+        "chance": 100,
+		"turnos": 2
+    }
+	],
+    "poder": 0,
+    "precisaoBase": 0,
+    "estamina": 20,
+    "recarga": 3
+  },
+  {
+    "id": 235,
+    "nome": "Kicking off",
+    "elemento": "FISICO",
+    "tipo": "OFENSIVA",
+    "alvo": "INIMIGO_UNICO",
+    "efeitos": [
+	{
+        "efeito": "APPLY_STATUS",
+        "alvo": 4,
+        "valor": 25,
+        "chance": 100,
+		"turnos": 1
+    },
+	{
+        "efeito": "ACTION_DELAY",
+        "alvo": -1,
+        "valor": 10,
+    }
+	],
+    "poder": 20,
+    "precisaoBase": 95,
+    "estamina": 15,
+    "recarga": 0
+  },
+  {
+    "id": 236,
+    "nome": "Bullet Time",
+    "elemento": "METAL",
+    "tipo": "ESPECIAL",
+    "alvo": "INIMIGO_AREA",
+    "efeitos": [
+	{
+        "efeito": "ACTION_ADVANCE",
+        "alvo": 4,
+        "valor": 25,
+    }
+	],
+    "poder": 60,
+    "precisaoBase": 0,
+    "estamina": 0,
+    "recarga": 0
   }
 ]

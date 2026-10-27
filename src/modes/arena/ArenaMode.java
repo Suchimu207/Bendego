@@ -138,6 +138,8 @@ public class ArenaMode implements GameState{
 	}
 	
 	private void teclaEnter(){
+		if (ArenaMode.batalha) return;
+		
 		if (subEstadoAtual == null){
             if (torneioSelecionado > 0 && ArenaModeManager.getTorneios().containsKey(torneioSelecionado)){
 				Tournament torneio = ArenaModeManager.getTorneio(torneioSelecionado);

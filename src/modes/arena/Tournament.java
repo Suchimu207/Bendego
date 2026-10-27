@@ -53,11 +53,11 @@ public class Tournament {
         return this.recompensaMonstro;
     }
 	
-	protected boolean isConcluido(){
+	public boolean isConcluido(){
 		return this.concluido;
 	}
 	
-	protected void setConcluido(boolean concluido){
+	public void setConcluido(boolean concluido){
 		this.concluido = concluido;
 	}
 	

@@ -46,6 +46,8 @@ public final class Inventory implements GameState{
 	
 	// ==================== ATRIBUTOS ====================
 	
+	private static final int PANDAKEN_ID = 41;
+	
 	private static Map<Integer, Monsters> monstrosInventario;
     private static List<Monsters> monstrosOrdenados;
     private static List<Skills> skillsTree, skillsDesbloqueadas;
@@ -84,7 +86,7 @@ public final class Inventory implements GameState{
     }
 	
 	private static void montarEquipeInicial(){
-		Inventory.adicionarMonstroInventário(40);
+		Inventory.adicionarMonstroInventário(PANDAKEN_ID);
 		Monsters monstro = Inventory.getMonstroInventario(1);
 	}
 	
@@ -349,7 +351,7 @@ public final class Inventory implements GameState{
 	
 	public static void equiparProximoSlotLivre(Monsters monstro){
 		if (monstro == null || equipeTabela == null) return;
- 
+		
 		for (SlotEquipe slot : SlotEquipe.values()){
 			if (!equipeTabela.containsKey(slot)){
 				equipeTabela.put(slot, monstro);

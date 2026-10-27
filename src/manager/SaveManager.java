@@ -8,6 +8,8 @@ import bestiary.Skills;
 import main.Player;
 import main.inventory.Inventory;
 
+import modes.arena.Tournament;
+
 import save.Version;
 
 import org.json.JSONArray;
@@ -30,7 +32,7 @@ public final class SaveManager {
 	
 	private SaveManager(){
 	}
-
+	
 	// ==================== SALVAR ====================
 
 	public static boolean salvar(){
@@ -39,7 +41,8 @@ public final class SaveManager {
 			raiz.put("version", SAVE_VERSION.toString());
 			raiz.put("player", montarPlayerJson());
 			raiz.put("inventario", montarInventarioJson());
-
+			raiz.put("torneios", montarTorneiosJson());
+			
 			Path pastaSaves = CAMINHO_SAVE.getParent();
 			if (pastaSaves != null && !Files.exists(pastaSaves)){
 				Files.createDirectories(pastaSaves);
@@ -86,6 +89,24 @@ public final class SaveManager {
 		return jsonInventario;
 	}
 	
+	private static JSONArray montarTorneiosJson(){
+		JSONArray torneiosArray = new JSONArray();
+		Map<Integer, Tournament> torneios = ArenaModeManager.getTorneios();
+		if (torneios == null) return torneiosArray;
+
+		for (Map.Entry<Integer, Tournament> entry : torneios.entrySet()){
+			Tournament torneio = entry.getValue();
+			if (torneio == null) continue;
+
+			JSONObject jsonTorneio = new JSONObject();
+			jsonTorneio.put("id", entry.getKey());
+			jsonTorneio.put("concluido", torneio.isConcluido());
+			torneiosArray.put(jsonTorneio);
+		}
+
+		return torneiosArray;
+	}
+	
 	private static JSONObject montarMonstroJson(Monsters monstro){
 		JSONObject jsonMonstro = new JSONObject();
 		jsonMonstro.put("instanceId", monstro.getInstanceId());
@@ -121,6 +142,7 @@ public final class SaveManager {
 
 			carregarPlayer(raiz.optJSONObject("player"));
 			carregarInventario(raiz.optJSONObject("inventario"));
+			carregarTorneios(raiz.optJSONArray("torneios"));
 
 			System.out.println(">>Jogo carregado com sucesso.");
 			return true;
@@ -152,13 +174,16 @@ public final class SaveManager {
 		JSONArray monstrosArray = jsonInventario.optJSONArray("monstros");
 		if (monstrosArray != null){
 			for (int i = 0; i < monstrosArray.length(); i++){
-				Monsters monstro = carregarMonstro(monstrosArray.getJSONObject(i));
+				JSONObject jsonMonstro = monstrosArray.getJSONObject(i);
+				Monsters monstro = carregarMonstro(jsonMonstro);
+				
 				if (monstro != null){
-					monstrosPorInstanceId.put(monstro.getInstanceId(), monstro);
+					String instanceIdSalvo = jsonMonstro.getString("instanceId");
+					monstrosPorInstanceId.put(instanceIdSalvo, monstro);
 				}
 			}
 		}
-
+		
 		JSONArray equipeArray = jsonInventario.optJSONArray("equipe");
 		if (equipeArray != null){
 			for (int i = 0; i < equipeArray.length(); i++){
@@ -167,6 +192,24 @@ public final class SaveManager {
 				String instanceId = equipeArray.getString(i);
 				Monsters monstro = monstrosPorInstanceId.get(instanceId);
 				if (monstro != null) Inventory.equiparProximoSlotLivre(monstro);
+			}
+		}
+	}
+	
+	private static void carregarTorneios(JSONArray jsonTorneios){
+		if (jsonTorneios == null) return;
+
+		Map<Integer, Tournament> torneios = ArenaModeManager.getTorneios();
+		if (torneios == null) return;
+
+		for (int i = 0; i < jsonTorneios.length(); i++){
+			JSONObject jsonTorneio = jsonTorneios.getJSONObject(i);
+			int id = jsonTorneio.getInt("id");
+			boolean concluido = jsonTorneio.getBoolean("concluido");
+
+			Tournament torneio = torneios.get(id);
+			if (torneio != null){
+				torneio.setConcluido(concluido);
 			}
 		}
 	}

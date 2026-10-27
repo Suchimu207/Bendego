@@ -135,5 +135,39 @@
 	"valor": 4,
     }
     ],
-  }
+  },
+  {
+    "id": 13,
+	"nome": "Strawman",
+    "descricao": "Imune a todo tipo de veneno e pesadelos.",
+	"efeitos": [
+    {
+	"efeito": "IMMUNITY",
+	"valor": 1,
+    },
+	{
+	"efeito": "IMMUNITY",
+	"valor": 6,
+    }
+    ],
+  },
+  {
+    "id": 14,
+	"nome": "Natural",
+    "descricao": "Imune a todo tipo de tontura, atordoamento e veneno.",
+	"efeitos": [
+    {
+	"efeito": "IMMUNITY",
+	"valor": 3,
+    },
+	{
+	"efeito": "IMMUNITY",
+	"valor": 4,
+    },
+	{
+	"efeito": "IMMUNITY",
+	"valor": 1,
+    }
+    ],
+  },
 ]

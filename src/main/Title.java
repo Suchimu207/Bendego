@@ -98,7 +98,7 @@ public final class Title implements GameState{
 		
 		Grapchics.limpaTela();
 		
-		Grapchics.desenhaCentro(TITLE_NAME, 14, Grapchics.BRANCO_CLARO);
+		Grapchics.desenhaCentroTTF(TITLE_NAME, 14, Grapchics.BRANCO_CLARO);
 		
 		if (Input.getCursorY() >= 4 || Input.getCursorY() == 0){
 			Input.setCursorY(1);	

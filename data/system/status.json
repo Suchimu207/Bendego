@@ -196,5 +196,11 @@
     "nome": "Dano reduzido (75%)",
     "tipo": "NEGATIVE",
     "subtipo": "DEBUFF"
+  },
+  {
+    "id": 33,
+    "nome": "Bênção",
+    "tipo": "POSITIVE",
+    "subtipo": "BUFF"
   }
 ]

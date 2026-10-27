@@ -31,12 +31,12 @@ public class ArenaModeManager {
 			);
 			
 			torneios.put(2, 
-			new Tournament("Greenwood Village Contest", 1, new int[]{8, 9, 10, 11, 12}, 
+			new Tournament("Greenwood Village Contest", 1, new int[]{8, 18, 9, 10, 11, 12},
 			25)
 			);
 			
 			torneios.put(3, 
-			new Tournament("Adventure in Ashwood Forest", 1, new int[]{13, 14, 15, 16, 17}, 
+			new Tournament("Adventure in Ashwood Forest", 2, new int[]{13, 14, 19, 15, 16, 17},
 			14)
 			);
 			

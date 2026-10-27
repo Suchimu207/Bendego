@@ -198,7 +198,7 @@ public final class BattleField {
 				Grapchics.desenhaTTF("E: Detalhes", 0, linhaAtual++, Grapchics.PRETO_CLARO);
 			}
 			if (especialAtivo && BattleTurn.isTurnoJogador() && !selecionarAlvo){
-				Grapchics.desenhaTTF("E+Q: Ativar especial", 0, linhaAtual++, Grapchics.PRETO_CLARO);
+				Grapchics.desenhaTTF("Espaço: Ativar especial", 0, linhaAtual++, Grapchics.PRETO_CLARO);
 			}
 			if (BattleTurn.isTurnoJogador()){
 				Grapchics.desenhaTTF("Shift: Recarregar estamina", 0, linhaAtual++, Grapchics.PRETO_CLARO);
@@ -380,6 +380,8 @@ public final class BattleField {
 			if (monstroUnidade == null) continue; 
 			boolean unidadeAtual = (monstroUnidade == monstro);
 			
+			boolean isAlvo = (unidade != null && unidade.isAlvo());
+			
             String texto = nome + " (AV: " + av + ")";
             if (unidade == BattleTurn.getUnidadeAtual()){
 				texto += (char)17;
@@ -388,12 +390,15 @@ public final class BattleField {
 			if (ehAliado && unidadeAtual){
 				Grapchics.desenhaTela((char)4+texto, 0, linhaAtual, Grapchics.AZUL_CLARO);
 				Grapchics.desenhaTTF(texto, 1, linhaAtual++, Grapchics.BRANCO_CLARO);
+				
 			}else if (ehAliado && !unidadeAtual){
-				Grapchics.desenhaTela((char)4+texto, 0, linhaAtual, Grapchics.AZUL_CLARO);
+				Grapchics.desenhaTela(isAlvo ? (char)26+texto : (char)4+texto, 0, linhaAtual, isAlvo ? Grapchics.AMARELO_CLARO : Grapchics.AZUL_CLARO);
 				Grapchics.desenhaTTF(texto, 1, linhaAtual++, Grapchics.PRETO_CLARO);
+				
 			}else if (!ehAliado && !unidadeAtual){
-				Grapchics.desenhaTela((char)6+texto, 0, linhaAtual, Grapchics.VERMELHO_CLARO);
-				Grapchics.desenhaTTF(texto, 1, linhaAtual++, Grapchics.PRETO_CLARO);
+				Grapchics.desenhaTela(isAlvo ? (char)26+texto : (char)6+texto, 0, linhaAtual, isAlvo ? Grapchics.AMARELO_CLARO : Grapchics.VERMELHO_CLARO);
+				Grapchics.desenhaTTF(texto, 1, linhaAtual++,  Grapchics.PRETO_CLARO);
+				
 			}else if (!ehAliado && unidadeAtual){
 				Grapchics.desenhaTela((char)6, 0, linhaAtual, Grapchics.VERMELHO_CLARO);
 				Grapchics.desenhaTTF(texto, 1, linhaAtual++, Grapchics.BRANCO_CLARO);
@@ -411,50 +416,56 @@ public final class BattleField {
 		boolean unidadeAtual = (monstroUnidade == monstro);
 		
 		BattleUnit unidadeAlvo = BattleTurn.getUnidadePorMonstro(monstro);
+		boolean isAlvo = (unidadeAlvo != null && unidadeAlvo.isAlvo());
 		
-		if (unidadeAtual){
-			Grapchics.desenhaTTF(monstro.getNomeMonstro(), x, y, Grapchics.AMARELO_CLARO);
-			Grapchics.desenhaTela("PV: "+monstro.getVidaAtualCombate() + "/" + monstro.getVidaAtualCombateMaxima(), 
-			x, y+1, Grapchics.BRANCO_CLARO);
-			
-			if (monstro.getEscudoAtual() > 0){
-				Grapchics.desenhaTela("Escudo: "+monstro.getEscudoAtual(),x, y+2, Grapchics.BRANCO_CLARO);
-				Grapchics.desenhaTela("STA: "+monstro.getEstaminaAtualCombate() + "/" + monstro.getEstaminaAtual(), 
-				x, y+3, Grapchics.BRANCO_CLARO);
-			}else{
-				Grapchics.desenhaTela("STA: "+monstro.getEstaminaAtualCombate() + "/" + monstro.getEstaminaAtual(), 
-				x, y+2, Grapchics.BRANCO_CLARO);
-			}
-		}else{
-			if (unidadeAlvo != null && unidadeAlvo.isAlvo()){
-				Grapchics.desenhaTela((char) 25, x+4, y - 1, Grapchics.AMARELO_CLARO);
-				
-				Grapchics.desenhaTela("PV: "+monstro.getVidaAtualCombate() + "/" + monstro.getVidaAtualCombateMaxima(), 
-				x, y+1, Grapchics.BRANCO_CLARO);
-				
-				if (monstro.getEscudoAtual() > 0){
-					Grapchics.desenhaTela("Escudo: "+monstro.getEscudoAtual(),x, y+2, Grapchics.BRANCO_CLARO);
-					Grapchics.desenhaTela("STA: "+monstro.getEstaminaAtualCombate() + "/" + monstro.getEstaminaAtual(), 
-					x, y+3, Grapchics.BRANCO_CLARO);
-				}else{
-					Grapchics.desenhaTela("STA: "+monstro.getEstaminaAtualCombate() + "/" + monstro.getEstaminaAtual(), 
-					x, y+2, Grapchics.BRANCO_CLARO);
-				}
-			}else{
-				Grapchics.desenhaTela("PV: "+monstro.getVidaAtualCombate() + "/" + monstro.getVidaAtualCombateMaxima(), 
-				x, y+1, Grapchics.PRETO_CLARO);
-				
-				if (monstro.getEscudoAtual() > 0){
-					Grapchics.desenhaTela("Escudo: "+monstro.getEscudoAtual(),x, y+2, Grapchics.PRETO_CLARO);
-					Grapchics.desenhaTela("STA: "+monstro.getEstaminaAtualCombate() + "/" + monstro.getEstaminaAtual(), 
-					x, y+3, Grapchics.PRETO_CLARO);
-				}else{
-					Grapchics.desenhaTela("STA: "+monstro.getEstaminaAtualCombate() + "/" + monstro.getEstaminaAtual(), 
-					x, y+2, Grapchics.PRETO_CLARO);
-				}
-			}
-			Grapchics.desenhaTTF(monstro.getNomeMonstro(), x, y, Grapchics.PRETO_CLARO);
+		Color corTexto = (unidadeAtual || isAlvo) ? Grapchics.BRANCO_CLARO : Grapchics.PRETO_CLARO;
+		Color corNome = unidadeAtual ? Grapchics.AMARELO_CLARO : Grapchics.PRETO_CLARO;
+		
+		if (!unidadeAtual && isAlvo){
+			Grapchics.desenhaTela((char) 25, x+4, y-1, Grapchics.AMARELO_CLARO);
 		}
+		
+		Grapchics.desenhaTTF(monstro.getNomeMonstro(), x, y, corNome);
+		
+		// ====================
+		
+		int linha = y + 1;
+		linha = desenhaBarraVida(monstro, x, linha, corTexto);
+		
+		if (monstro.getEscudoAtual() > 0){
+			Grapchics.desenhaTela("Escudo: " + monstro.getEscudoAtual(), x, linha++, corTexto);
+		}
+		
+		desenhaBarraEstamina(monstro, x, linha, corTexto);
+	}
+	
+	private int desenhaBarraVida(Monsters monstro, int x, int y, Color corTexto){
+		int atual = monstro.getVidaAtualCombate();
+		int maximo = monstro.getVidaAtualCombateMaxima();
+		double percentual = maximo > 0 ? (double) atual / maximo : 0;
+
+		final int LARGURA_BARRA = 6;
+
+		Grapchics.desenhaBarra(x, y, LARGURA_BARRA, percentual, corPorPercentualVida(percentual), Grapchics.PRETO);
+		Grapchics.desenhaTela(atual + "/" + maximo, x+LARGURA_BARRA, y, corTexto);		
+		return y + 1;
+	}
+	
+	private void desenhaBarraEstamina(Monsters monstro, int x, int y, Color corTexto){
+		int atual = monstro.getEstaminaAtualCombate();
+		int maximo = monstro.getEstaminaAtual();
+		double percentual = maximo > 0 ? (double) atual / maximo : 0;
+
+		final int LARGURA_BARRA = 6;
+
+		Grapchics.desenhaBarra(x, y, LARGURA_BARRA, percentual, Grapchics.AZUL_CLARO, Grapchics.PRETO);
+		Grapchics.desenhaTela(atual + "/" + maximo, x+LARGURA_BARRA, y, corTexto);
+	}
+	
+	private Color corPorPercentualVida(double percentual){
+		if (percentual > 0.5) return Grapchics.VERDE_CLARO;
+		if (percentual > 0.10) return Grapchics.VERMELHO_CLARO;
+		return Grapchics.VERDE_CLARO;
 	}
 	
 	private void desenhaSetaBatalha(){    

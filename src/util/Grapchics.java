@@ -11,6 +11,13 @@ public final class Grapchics {
 	private final static int TILE_SIZE_X = 40;
 	private final static int TILE_SIZE_Y = 40;
 	
+	public final static int CAMADA_PRINCIPAL = 0;
+	public final static int CAMADA_BARRAS = 1;
+	public final static int CAMADA_NUMEROS_BARRA = 2;
+	
+	private final static char BLOCO_CHEIO = (char) 219;
+	private final static char BLOCO_VAZIO = (char) 177;
+	
 	private final static AsciiPanel tela = new AsciiPanel(TILE_SIZE_X, TILE_SIZE_Y, AsciiFont.CP437_16x16);
 	
 	// ==================== CORES ====================
@@ -178,6 +185,26 @@ public final class Grapchics {
 			tela.write("["+(char)c2+"]", tamanhoTexto+1, posY, corFonte);
 		}
 		
+	}
+	
+	// ==================== DESENHO DE BARRAS ====================
+	
+	public static void desenhaBarra(int x, int y, int largura, double percentual, Color corCheio, Color corVazio){
+		int camadaAnterior = tela.getActiveLayer();
+		tela.setActiveLayer(CAMADA_BARRAS);
+
+		double percentualClamp = Math.max(0.0, Math.min(1.0, percentual));
+		int preenchido = (int) Math.round(largura * percentualClamp);
+
+		for (int i = 0; i < largura; i++){
+			if (i < preenchido){
+				tela.write(BLOCO_CHEIO, x + i, y, corCheio);
+			}else{
+				tela.write(BLOCO_VAZIO, x + i, y, corVazio);
+			}
+		}
+		
+		tela.setActiveLayer(camadaAnterior);
 	}
 	
 	// ==================== MÉTODOS AUXILIARES ====================

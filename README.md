@@ -1,4 +1,4 @@
-# Madoka - Protótipo
+# Bendegó - Protótipo
 
 Um RPG baseado em turnos.
 

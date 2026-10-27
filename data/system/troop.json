@@ -8,7 +8,7 @@
         "nivel": 1
       }
     ],
-    "exp": 50,
+    "exp": 100,
     "ouro": 10
   },
   {
@@ -24,7 +24,7 @@
         "nivel": 1
       }
     ],
-    "exp": 50,
+    "exp": 110,
     "ouro": 10
   },
   {
@@ -40,7 +40,7 @@
         "nivel": 2
       }
     ],
-    "exp": 100,
+    "exp": 110,
     "ouro": 15
   },
   {
@@ -221,11 +221,11 @@
     "inimigos": [
 	  {
         "idMonstro": 4,
-        "nivel": 3
+        "nivel": 5
       },
 	  {
         "idMonstro": 4,
-        "nivel": 3
+        "nivel": 5
       }
     ],
     "exp": 150,
@@ -237,11 +237,11 @@
     "inimigos": [
 	  {
         "idMonstro": 16,
-        "nivel": 4
+        "nivel": 5
       },
 	  {
         "idMonstro": 35,
-        "nivel": 5
+        "nivel": 6
       }
     ],
     "exp": 150,
@@ -253,19 +253,19 @@
     "inimigos": [
 	  {
         "idMonstro": 3,
-        "nivel": 4
-      },
-	  {
-        "idMonstro": 34,
         "nivel": 5
       },
 	  {
+        "idMonstro": 34,
+        "nivel": 7
+      },
+	  {
         "idMonstro": 3,
-        "nivel": 4
+        "nivel": 6
       },
     ],
-    "exp": 150,
-    "ouro": 50
+    "exp": 200,
+    "ouro": 40
   },
   {
 	"id": 16,
@@ -273,18 +273,18 @@
     "inimigos": [
 	  {
         "idMonstro": 30,
-        "nivel": 5
+        "nivel": 6
       },
 	  {
         "idMonstro": 26,
-        "nivel": 5
+        "nivel": 7
       },
 	  {
         "idMonstro": 4,
-        "nivel": 5
+        "nivel": 6
       },
     ],
-    "exp": 200,
+    "exp": 250,
     "ouro": 50
   },
   {
@@ -293,18 +293,54 @@
     "inimigos": [
 	  {
         "idMonstro": 16,
-        "nivel": 5
-      },
-	  {
-        "idMonstro": 14,
         "nivel": 7
       },
 	  {
+        "idMonstro": 14,
+        "nivel": 8
+      },
+	  {
         "idMonstro": 35,
-        "nivel": 5
+        "nivel": 7
       },
     ],
-    "exp": 450,
-    "ouro": 100
-  }
+    "exp": 500,
+    "ouro": 150
+  },
+  {
+	"id": 18,
+	"nome": "[...]",
+    "inimigos": [
+	  {
+        "idMonstro": 39,
+        "nivel": 5
+      },
+	  {
+        "idMonstro": 19,
+        "nivel": 5
+      }
+    ],
+    "exp": 150,
+    "ouro": 30
+  },
+  {
+	"id": 19,
+	"nome": "[...]",
+    "inimigos": [
+	  {
+        "idMonstro": 4,
+        "nivel": 5
+      },
+	  {
+        "idMonstro": 3,
+        "nivel": 5
+      },
+	  {
+        "idMonstro": 4,
+        "nivel": 5
+      }
+    ],
+    "exp": 150,
+    "ouro": 30
+  },
 ]

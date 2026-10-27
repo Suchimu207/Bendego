@@ -112,16 +112,6 @@ public final class Battle implements GameState{
 	
 	@Override
 	public void recebeComando(int tecla, Set<Integer> teclasPressionadas){
-		if (teclasPressionadas != null && 
-			teclasPressionadas.contains(KeyEvent.VK_E) &&
-			teclasPressionadas.contains(KeyEvent.VK_Q)){
-			
-			if (subEstadoAtual == SubEstadosBatalha.CAMPO && campoBatalha != null){
-				campoBatalha.ativarEspecial();
-				return;
-			}
-		}
-		
 		switch (tecla){
 			case KeyEvent.VK_A:
 			case KeyEvent.VK_LEFT:teclaEsquerda(); break;
@@ -136,6 +126,12 @@ public final class Battle implements GameState{
 			case KeyEvent.VK_DOWN: teclaBaixo(); break;
 			
 			case KeyEvent.VK_ENTER: teclaEnter(); break;
+			case KeyEvent.VK_SPACE: 
+			if (subEstadoAtual == SubEstadosBatalha.CAMPO && campoBatalha != null){
+				campoBatalha.ativarEspecial();
+				return;
+			}
+			break;
 			case KeyEvent.VK_SHIFT: teclaShift(); break;
 			case KeyEvent.VK_E: teclaE(); break;
 			case KeyEvent.VK_Q: teclaQ(); break;
