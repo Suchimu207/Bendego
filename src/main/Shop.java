@@ -76,7 +76,8 @@ public final class Shop implements GameState{
 	
     // ==================== ATRIBUTOS ====================
 	
-	private static ArrayList<ItemLoja> estoque, carrinho;
+	private static ArrayList<ItemLoja> estoque, carrinho, estoqueFiltrado;
+	private static Monsters.Raridades filtroRaridadeAtual = null;
 	
     private static int linhaItem, idEstanteAtual, totalPaginas, paginaAtual, 
     inicioLista, fimLista, tamanhoLoja, tamanhoRecibo, ouroGasto, total;
@@ -87,8 +88,12 @@ public final class Shop implements GameState{
 	
 	private static SubEstadosLoja subEstadoAtual = null;
 	
+	private static final int MAX_MONSTERS_PAG = 30;
+	
     public Shop(){
 		Shop.limparCarrinho();
+		filtroRaridadeAtual = null;
+		aplicarFiltro();
     }
     
 	// ==================== INICIALIZAÇÃO ====================
@@ -96,6 +101,9 @@ public final class Shop implements GameState{
     protected static void inicializarLoja(){
         estoque = new ArrayList<>();
         carrinho = new ArrayList<>();
+		
+		filtroRaridadeAtual = null;
+		
         idEstanteAtual = 1;
         paginaAtual = 1;
         ouroGasto = 0;
@@ -121,6 +129,8 @@ public final class Shop implements GameState{
 			
             estoque.add(new ItemLoja(i, preco, idEstanteAtual++));
         }
+		
+		aplicarFiltro();
     }
 	
 	// ==================== ESTADO ====================
@@ -161,6 +171,7 @@ public final class Shop implements GameState{
 				
 			case KeyEvent.VK_ENTER: teclaEnter(); break;
 			case KeyEvent.VK_SHIFT: teclaShift(); break;
+			case KeyEvent.VK_F: teclaFiltro(); break;
 			case KeyEvent.VK_E: teclaInventário(); break;
 			case KeyEvent.VK_Q: teclaComprar(); break;
 			case KeyEvent.VK_ESCAPE: teclaEsc(); break;
@@ -211,6 +222,26 @@ public final class Shop implements GameState{
 		}
 	}
 	
+	private void teclaFiltro(){
+		if (subEstadoAtual != null) return;
+		
+		if (filtroRaridadeAtual == null){
+			filtroRaridadeAtual = Monsters.Raridades.COMUM;
+		}else if (filtroRaridadeAtual == Monsters.Raridades.COMUM){
+			filtroRaridadeAtual = Monsters.Raridades.INCOMUM;
+		}else if (filtroRaridadeAtual == Monsters.Raridades.INCOMUM){
+			filtroRaridadeAtual = Monsters.Raridades.RARO;
+		}else if (filtroRaridadeAtual == Monsters.Raridades.RARO){
+			filtroRaridadeAtual = Monsters.Raridades.EPICO;
+		}else if (filtroRaridadeAtual == Monsters.Raridades.EPICO){
+			filtroRaridadeAtual = Monsters.Raridades.LENDARIO;
+		}else{
+			filtroRaridadeAtual = null;
+		}
+		
+		aplicarFiltro();
+	}
+	
 	private void teclaInventário(){
 		if (subEstadoAtual == null){
 			mudarEstado(new Maps());
@@ -248,10 +279,10 @@ public final class Shop implements GameState{
 	
     private static void desenhaLoja(){
 		linhaItem = 0;
-		tamanhoLoja = estoque.size();
-        inicioLista = (paginaAtual - 1) * 29;
-        fimLista = Math.min(inicioLista + 29, tamanhoLoja);
-		totalPaginas = Math.max(1, (int) Math.ceil(tamanhoLoja / 29.0));
+		tamanhoLoja = estoqueFiltrado.size();
+        inicioLista = (paginaAtual - 1) * MAX_MONSTERS_PAG;
+        fimLista = Math.min(inicioLista + MAX_MONSTERS_PAG, tamanhoLoja);
+		totalPaginas = Math.max(1, (int) Math.ceil(tamanhoLoja / 30.0));
 		
 		if (Input.getCursorY() < inicioLista) Input.setCursorY(fimLista);
 		if (Input.getCursorY() >= fimLista) Input.setCursorY(inicioLista);
@@ -274,7 +305,7 @@ public final class Shop implements GameState{
 	
 	private static void desenhaListaLoja(){
 		for (int i = inicioLista; i < fimLista; i++){
-            ItemLoja item = estoque.get(i);
+			ItemLoja item = estoqueFiltrado.get(i);
             Monsters infoMonstro = MonstersManager.getMonstro(item.idMonstro); 
             if (infoMonstro == null) continue;
 
@@ -433,12 +464,20 @@ public final class Shop implements GameState{
 		}
         
 		if (!isLongeDoCaixa){
+			String textoFiltro = "F: Mudar filtro (";
+			if (filtroRaridadeAtual == null){
+				textoFiltro += "Todos";
+			}else{
+				textoFiltro += filtroRaridadeAtual.getRaridadeNome();
+			}
+			
+			Grapchics.desenhaTTF(textoFiltro+")", 0, linhaItem++, Grapchics.PRETO_CLARO);
 			Grapchics.desenhaTTF("Shift: Ver detalhes", 0, linhaItem++, Grapchics.PRETO_CLARO);
 		}
 		
 		Grapchics.desenhaTTF("ENTER: Colocar", 0, linhaItem, Grapchics.PRETO_CLARO);
-		Grapchics.desenhaTela(""+(char)47,13,linhaItem,Grapchics.PRETO_CLARO);
-		Grapchics.desenhaTTF("Remover do carrinho", 14, linhaItem++, Grapchics.PRETO_CLARO);
+		Grapchics.desenhaTela(""+(char)47,14,linhaItem,Grapchics.PRETO_CLARO);
+		Grapchics.desenhaTTF("Remover do carrinho", 15, linhaItem++, Grapchics.PRETO_CLARO);
 		desenhaOuroCarrinho();
 	}
 	
@@ -530,6 +569,24 @@ public final class Shop implements GameState{
 		return null;
 	}
 	
+	private static void aplicarFiltro(){
+		if (estoqueFiltrado == null) estoqueFiltrado = new ArrayList<>();
+		estoqueFiltrado.clear();
+		
+		for (ItemLoja item : estoque){
+			Monsters infoMonstro = MonstersManager.getMonstro(item.idMonstro);
+			if (infoMonstro == null) continue;
+			
+			
+			if (filtroRaridadeAtual == null || infoMonstro.getRaridadeMonstro() == filtroRaridadeAtual){
+				estoqueFiltrado.add(item);
+			}
+		}
+		
+		paginaAtual = 1;
+		Input.setCursorY(0); 
+	}
+		
 	private static void limparCarrinho(){
         if (carrinho != null){
             for (ItemLoja item : carrinho){
