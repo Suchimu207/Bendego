@@ -64,7 +64,7 @@ public final class BattleAction {
 	
 	// ==================== EXECUÇÃO ====================
 	
-    protected static BattleActionResult executarHabilidade(Monsters usuario, List<Monsters> alvos, Skills habilidade){		
+    protected static BattleActionResult executarHabilidade(Monsters usuario, List<Monsters> alvos, Skills habilidade, BattleTurn turno){		
 		int estaminaAtualCombate = usuario.getEstaminaAtualCombate();
 		int energiaHabilidade = habilidade.getEnergiaHabilidade();
 		resultados[0] = 0;
@@ -78,7 +78,7 @@ public final class BattleAction {
 		
         if (habilidade.getPoderHabilidade() > 0) resultados[0] = calcularDano(usuario, alvos, habilidade);
 		
-		aplicarEfeitos(usuario, alvos, habilidade);
+		aplicarEfeitos(usuario, alvos, habilidade, turno);
 		
 		carregarEspecialMonstros(usuario, alvos, habilidade);
 		
@@ -96,7 +96,9 @@ public final class BattleAction {
 			default:
 				usuario.carregarEspecial(5);
 				for (Monsters monstro : alvos){
-					monstro.carregarEspecial(2);
+					if (monstro.getClasseAtual() == Monsters.Classes.TANQUE){
+						monstro.carregarEspecial(4);
+					}else monstro.carregarEspecial(2);
 				}
 			break;
 		}
@@ -188,15 +190,15 @@ public final class BattleAction {
 		}
 	}
 	
-	private static void aplicarEfeitos(Monsters usuario, List<Monsters> alvosHabilidade, Skills habilidade){
+	private static void aplicarEfeitos(Monsters usuario, List<Monsters> alvosHabilidade, Skills habilidade, BattleTurn turno){
 		for (Effects dados : habilidade.getEfeitos()){
 			EffectsStrategy efeito = EffectsManager.getEfeito(dados.getTipo());
 			if (efeito != null){
-				List<Monsters> alvosDoEfeito = determinarAlvosEfeito(usuario, alvosHabilidade, dados.getAlvo());
+				List<Monsters> alvosDoEfeito = determinarAlvosEfeito(usuario, alvosHabilidade, dados.getAlvo(), turno);
 				
 				for (Monsters monstro : alvosDoEfeito){
 					if (monstro != null && monstro.getVidaAtualCombate() > 0){
-						efeito.aplicar(usuario, monstro, habilidade, dados);
+						efeito.aplicar(usuario, monstro, habilidade, dados, turno);
 					}
 				}
 			}
@@ -205,13 +207,13 @@ public final class BattleAction {
 	
 	// ==================== MÉTODOS AUXILIARES ====================
 	
-	private static List<Monsters> determinarAlvosEfeito(Monsters usuario, List<Monsters> alvosHabilidade, int alvoEfeito){
+	private static List<Monsters> determinarAlvosEfeito(Monsters usuario, List<Monsters> alvosHabilidade, int alvoEfeito, BattleTurn turno){
 		List<Monsters> alvos = new ArrayList<>();
 		
 		List<Monsters> aliadosVivos = new ArrayList<>();
 		List<Monsters> inimigosVivos = new ArrayList<>();
-    
-		for (BattleUnit unidade : BattleTurn.getUnidades()){
+		
+		for (BattleUnit unidade : turno.getUnidades()){
 			Monsters monstro = unidade.getMonstro();
 			if (monstro != null && monstro.getVidaAtualCombate() > 0){
 				if (unidade.isAliado()){

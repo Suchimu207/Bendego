@@ -16,11 +16,16 @@ public final class BattleAI {
 	private static final Random random = new Random();
 	private static final int PROVOCATION_STATUS_ID = 11;
 	
+	private final Battle batalha;
+	private final BattleTurn turno;
+	
 	private BattleUnit unidadeAlvo;
 	private Skills ultimaSkill = null;
 	private BattleActionResult resultadoAção = null;
 	
-	protected BattleAI(){
+	protected BattleAI(Battle batalha, BattleTurn turno){
+		this.batalha = batalha;
+		this.turno = turno;
 	}
 	
 	// ==================== AÇÕES DO INIMIGO ====================
@@ -28,7 +33,7 @@ public final class BattleAI {
 	protected void turnoInimigo(){
 		limparEstadoAnterior();
 		
-		BattleUnit unidadeAtual = BattleTurn.getUnidadeAtual();
+		BattleUnit unidadeAtual = turno.getUnidadeAtual();
         if (unidadeAtual == null) return;
         
         Monsters monstroInimigo = unidadeAtual.getMonstro();
@@ -46,11 +51,11 @@ public final class BattleAI {
 			
 			if (!alvos.isEmpty()){
 				for (Monsters alvo : alvos){
-					this.unidadeAlvo = BattleTurn.getUnidadePorMonstro(alvo);
+					this.unidadeAlvo = turno.getUnidadePorMonstro(alvo);
 					if (unidadeAlvo != null) unidadeAlvo.setAlvo(true);
 				}
 				
-				this.resultadoAção = BattleAction.executarHabilidade(monstroInimigo, alvos, habilidade);
+				this.resultadoAção = BattleAction.executarHabilidade(monstroInimigo, alvos, habilidade, turno);
 				
 				if (!this.resultadoAção.isAcerto()) Audio.tocarSom("Miss", 0.1f);
 				if (this.resultadoAção.isAcerto() && this.resultadoAção.getDanoRealizado() > 0) Audio.tocarSom("Damage", 0.1f);
@@ -62,7 +67,7 @@ public final class BattleAI {
 				String dano = null;
 				if (danoRealizado > 0) dano = ">>Causou "+danoRealizado+" de dano.";
 				
-				Battle.exibirMensagemInimigo(nomeMonstro, ultimaSkill, dano);
+				batalha.exibirMensagemInimigo(nomeMonstro, ultimaSkill, dano);
 				alvos.clear();
 				return;
 			}
@@ -76,7 +81,7 @@ public final class BattleAI {
 		Audio.tocarSom("Charge", 0.1f);
 		
 		String frase = monstro.getNomeMonstro()+ " recarrega.";
-		Battle.exibirMensagemInimigo(frase,null,null);
+		batalha.exibirMensagemInimigo(frase,null,null);
 	}
 	
 	// ==================== MÉTODOS AUXILIARES ====================
@@ -109,7 +114,7 @@ public final class BattleAI {
 		List<Monsters> timeJogador = new ArrayList<>();
 		List<Monsters> timeInimigo = new ArrayList<>(); 
 		
-		for (BattleUnit u : BattleTurn.getUnidades()){
+		for (BattleUnit u : turno.getUnidades()){
 			if (u.getMonstro() != null && u.getMonstro().getVidaAtualCombate() > 0){
 				if (u.isAliado()){
 					timeJogador.add(u.getMonstro());

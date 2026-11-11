@@ -6,19 +6,23 @@ import bestiary.Skills;
 import java.util.*;
 
 public final class BattleTurn {
-	private static List<BattleUnit> unidades = new ArrayList<>();
-	private static BattleUnit unidadeAtual, unidadeJogadorAtual;
-	private static int avAtual;
-	private static boolean turnoJogador, aguardandoTurno;
+	private List<BattleUnit> unidades = new ArrayList<>();
+	private BattleUnit unidadeAtual, unidadeJogadorAtual;
+	private int avAtual;
+	private boolean turnoJogador, aguardandoTurno;
 	
-	private static BattleUnit proximaUnidadeForçada = null;
+	private final Battle batalha; 
 	
-	private BattleTurn(){
+	private BattleUnit proximaUnidadeForçada = null;
+	
+	protected BattleTurn(Battle batalha){
+		this.batalha = batalha;
+		this.unidades = new ArrayList<>();
 	}
 	
 	// avançarTurno() → Jogador/IA age → finalizarTurno() → turnoRealizado() → [Começo]
 	
-	protected static void ordenarActionValue(List<BattleUnit> unidades){
+	protected void ordenarActionValue(List<BattleUnit> unidades){
         Collections.sort(unidades, (u1, u2) ->{
             int compare = Integer.compare(u1.getActionValue(), u2.getActionValue());
             if (compare == 0){
@@ -32,7 +36,7 @@ public final class BattleTurn {
         });
     }
 	
-    protected static void avançarTurno(){
+    protected void avançarTurno(){
         if (unidades.isEmpty()) return;
         
 		if (proximaUnidadeForçada != null && unidades.contains(proximaUnidadeForçada)){
@@ -59,15 +63,15 @@ public final class BattleTurn {
 		if (!monstro.podeAgir()){
 			String frase = monstro.getNomeMonstro()+" perdeu a rodada.";
 			if (unidadeAtual.isAliado()){
-				Battle.exibirMensagemAliado(frase, null, null);
+				batalha.exibirMensagemAliado(frase, null, null);
 			}else{
-				Battle.exibirMensagemInimigo(frase, null, null);
+				batalha.exibirMensagemInimigo(frase, null, null);
 			}
 			return;
 		}
     }
 	
-	protected static void finalizarTurno(){
+	protected void finalizarTurno(){
 		Monsters monstro = unidadeAtual.getMonstro();
 		
 		monstro.reduzirDuraçãoStatus();
@@ -84,7 +88,7 @@ public final class BattleTurn {
         avançarTurno();
     }
 	
-	private static void turnoRealizado(){
+	private void turnoRealizado(){
 		for (BattleUnit user : unidades){
 			if (user != unidadeAtual){
 				user.setActionValueAtual(user.getActionValue() - avAtual);
@@ -93,30 +97,30 @@ public final class BattleTurn {
 		unidadeAtual.setActionValueAtual(unidadeAtual.calcularActionValue());
 	}
 	
-	private static void controlarRecargaHabilidade(){
+	private void controlarRecargaHabilidade(){
 		if (unidadeAtual != null){
 			Monsters monstro = unidadeAtual.getMonstro();
 			monstro.reduzirRecargaHabilidades();
 		}
 	}
 	
-	public static void forcarProximoTurno(BattleUnit unidade){
+	public void forcarProximoTurno(BattleUnit unidade){
         proximaUnidadeForçada = unidade;
     }
 	
-	protected static List<BattleUnit> getUnidades(){
+	protected List<BattleUnit> getUnidades(){
 		return unidades;
 	}	
 	
-	protected static BattleUnit getUnidadeAtual(){
+	protected BattleUnit getUnidadeAtual(){
 		return unidadeAtual;
 	}
 	
-	protected static BattleUnit getUnidadeJogadorAtual(){
+	protected BattleUnit getUnidadeJogadorAtual(){
 		return unidadeJogadorAtual;
 	}
 	
-	public static BattleUnit getUnidadePorMonstro(Monsters monstro){
+	public BattleUnit getUnidadePorMonstro(Monsters monstro){
 		for (BattleUnit unidade : unidades){
 			if (unidade.getMonstro() == monstro){
 				return unidade;
@@ -125,16 +129,16 @@ public final class BattleTurn {
 		return null;
 	}
 	
-	protected static boolean isTurnoJogador(){
+	protected boolean isTurnoJogador(){
 		return turnoJogador;
 	}
 	
-	protected static boolean isAguardandoTurno(){
+	protected boolean isAguardandoTurno(){
 		return aguardandoTurno;
 	}
 	
-	protected static void setAguardandoTurno(Boolean aguardandoTurno){
-		BattleTurn.aguardandoTurno = aguardandoTurno;
+	protected void setAguardandoTurno(Boolean aguardandoTurno){
+		this.aguardandoTurno = aguardandoTurno;
 	}
 	
 	//===

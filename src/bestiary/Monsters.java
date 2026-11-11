@@ -145,7 +145,7 @@ public class Monsters {
 	
 	private final int NIVEL_MAXIMO = 40;
 	
-	private final int MIN_PROVOCATION_RATE = 100;
+	private final int MIN_PROVOCATION_RATE = 0;
 	private final int MAX_PROVOCATION_RATE = 999;
 	
 	private Map<Integer, List<Skills>> skillsTree = new HashMap<>();
@@ -774,7 +774,7 @@ public class Monsters {
 	}
 	
 	public int getProvocationRate(){
-		return provocationRate;
+		return this.provocationRate;
 	}
 	
 	public void setProvocationRate(int provocationRate){

@@ -57,6 +57,10 @@ public final class Terminal implements KeyListener {
 		return estado;
 	}
 	
+	public static GameState getEstadoAtual(){
+		return estadoAtual;
+	}
+	
 	// ==================== INICIALIZAÇÃO ====================
 	
 	private void setarFonte(){

@@ -44,6 +44,9 @@ public final class BattleField {
 	
 	// ==================== ATRIBUTOS ====================
 	
+	private Battle batalha;
+	private BattleTurn turno;
+	
 	private Monsters[] aliados, aliadosDerrotados;
 	private int maxAliados;
 	private List<Integer> posiçõesAliadosX;
@@ -87,9 +90,12 @@ public final class BattleField {
 		inicializarActionValue();
 	}
 	
-	protected BattleField(Monsters[] aliados, Troop tropa, List<Effects> efeitosIniciais){
-		setarCampo(aliados, tropa);
+	protected BattleField(Battle batalha, Monsters[] aliados, Troop tropa, List<Effects> efeitosIniciais, BattleTurn turno){
+		this.batalha = batalha;
 		this.efeitosIniciais = efeitosIniciais;	
+		this.turno = turno;
+		
+		setarCampo(aliados, tropa);
 		
 		prepararMonstros();
 		inicializarActionValue();
@@ -111,7 +117,7 @@ public final class BattleField {
 		this.maxInimigos = tropa.getMonstros().size();
 		this.posiçõesInimigosX = new ArrayList<Integer>();
 		this.posiçõesInimigosY = new ArrayList<Integer>();
-		this.inimigoAI = new BattleAI();
+		this.inimigoAI = new BattleAI(this.batalha, this.turno);
 		
 		this.batalhaFinalizada = false;
 	}
@@ -139,7 +145,7 @@ public final class BattleField {
 				EffectsStrategy efeito = EffectsManager.getEfeito(efeitoAtual.getTipo());
 				
 				if (efeito != null){
-					efeito.aplicar(monstro, monstro, null, efeitoAtual);
+					efeito.aplicar(monstro, monstro, null, efeitoAtual, turno);
 				}
 			}
 		}
@@ -162,23 +168,23 @@ public final class BattleField {
 	}
 	
 	private void inicializarActionValue(){
-		BattleTurn.getUnidades().clear();
+		turno.getUnidades().clear();
 		
         for (Monsters monstro : aliados){
             if (monstro != null){
-                BattleTurn.getUnidades().add(new BattleUnit(monstro, true));
+                turno.getUnidades().add(new BattleUnit(monstro, true));
             }
         }
         
         for (Monsters monstro : inimigos){
             if (monstro != null){
-                BattleTurn.getUnidades().add(new BattleUnit(monstro, false));
+                turno.getUnidades().add(new BattleUnit(monstro, false));
             }
         }
         
-        BattleTurn.ordenarActionValue(BattleTurn.getUnidades());
+        turno.ordenarActionValue(turno.getUnidades());
         
-        BattleTurn.avançarTurno();
+        turno.avançarTurno();
     }
 	
 	// ==================== DESENHO ====================
@@ -194,13 +200,13 @@ public final class BattleField {
 			if (selecionarAlvo){
 				Grapchics.desenhaTTF("Q: Voltar", 0, linhaAtual++, Grapchics.PRETO_CLARO);
 			}
-			if (BattleTurn.isTurnoJogador()){
+			if (turno.isTurnoJogador()){
 				Grapchics.desenhaTTF("E: Detalhes", 0, linhaAtual++, Grapchics.PRETO_CLARO);
 			}
-			if (especialAtivo && BattleTurn.isTurnoJogador() && !selecionarAlvo){
+			if (especialAtivo && turno.isTurnoJogador() && !selecionarAlvo){
 				Grapchics.desenhaTTF("Espaço: Ativar especial", 0, linhaAtual++, Grapchics.PRETO_CLARO);
 			}
-			if (BattleTurn.isTurnoJogador()){
+			if (turno.isTurnoJogador()){
 				Grapchics.desenhaTTF("Shift: Recarregar estamina", 0, linhaAtual++, Grapchics.PRETO_CLARO);
 			}
 		}
@@ -215,7 +221,7 @@ public final class BattleField {
 		
 		linhaAtual += 10;
 		if (!aguardandoAliado){
-			if (BattleTurn.isAguardandoTurno() && BattleTurn.isTurnoJogador()){
+			if (turno.isAguardandoTurno() && turno.isTurnoJogador()){
 				if (!selecionarAlvo){
 					desenhaBatalhaComandos();
 				}else{
@@ -368,7 +374,7 @@ public final class BattleField {
 	private void desenhaBarraActionValue(){
 		int count = 0;
 		Grapchics.desenhaTela("____________________",0,linhaAtual++, Grapchics.PRETO_CLARO);
-        for (BattleUnit unidade : BattleTurn.getUnidades()){
+        for (BattleUnit unidade : turno.getUnidades()){
             if (count >= 6) break;
             Monsters monstro = unidade.getMonstro();
             if (monstro == null) continue;
@@ -376,14 +382,14 @@ public final class BattleField {
             String nome = monstro.getNomeMonstro();
             int av = unidade.getActionValue();
 			boolean ehAliado = unidade.isAliado();
-			Monsters monstroUnidade = BattleTurn.getUnidadeAtual().getMonstro();
+			Monsters monstroUnidade = turno.getUnidadeAtual().getMonstro();
 			if (monstroUnidade == null) continue; 
 			boolean unidadeAtual = (monstroUnidade == monstro);
 			
 			boolean isAlvo = (unidade != null && unidade.isAlvo());
 			
             String texto = nome + " (AV: " + av + ")";
-            if (unidade == BattleTurn.getUnidadeAtual()){
+            if (unidade == turno.getUnidadeAtual()){
 				texto += (char)17;
             }
             
@@ -412,10 +418,10 @@ public final class BattleField {
 	private void desenhaMonstroBatalha(Monsters monstro, int x, int y){
 		if (monstro == null) return;
 		
-		Monsters monstroUnidade = BattleTurn.getUnidadeAtual().getMonstro();
+		Monsters monstroUnidade = turno.getUnidadeAtual().getMonstro();
 		boolean unidadeAtual = (monstroUnidade == monstro);
 		
-		BattleUnit unidadeAlvo = BattleTurn.getUnidadePorMonstro(monstro);
+		BattleUnit unidadeAlvo = turno.getUnidadePorMonstro(monstro);
 		boolean isAlvo = (unidadeAlvo != null && unidadeAlvo.isAlvo());
 		
 		Color corTexto = (unidadeAtual || isAlvo) ? Grapchics.BRANCO_CLARO : Grapchics.PRETO_CLARO;
@@ -513,7 +519,7 @@ public final class BattleField {
 			break;
 			
 			case USUARIO:
-            monstroSelecionado = BattleTurn.getUnidadeJogadorAtual().getMonstro();
+            monstroSelecionado = turno.getUnidadeJogadorAtual().getMonstro();
 			if (monstroSelecionado == null) return;
 			
 			monstrosAlvos.add(monstroSelecionado);
@@ -581,7 +587,7 @@ public final class BattleField {
 	}
 	
 	private void desenhaBatalhaComandos(){
-		Monsters monstroAtual = BattleTurn.getUnidadeJogadorAtual().getMonstro();
+		Monsters monstroAtual = turno.getUnidadeJogadorAtual().getMonstro();
 		if (monstroAtual == null) return;
 		int tamanhoSkills = monstroAtual.getQuantidadeMaxSlotsHabilidade();
 		
@@ -903,9 +909,9 @@ public final class BattleField {
 			return;
 		}
 		
-        if (!BattleTurn.isAguardandoTurno() || !BattleTurn.isTurnoJogador()) return;
+        if (!turno.isAguardandoTurno() || !turno.isTurnoJogador()) return;
         if (skillSelecionada == null) return;
-        if (BattleTurn.getUnidadeJogadorAtual() == null) return;
+        if (turno.getUnidadeJogadorAtual() == null) return;
         
         if (!selecionarAlvo){
             selecionarAlvo = true;
@@ -914,15 +920,15 @@ public final class BattleField {
         }
         
         if (selecionarAlvo && !monstrosAlvos.isEmpty() && skillSelecionada != null){
-            Monsters usuario = BattleTurn.getUnidadeJogadorAtual().getMonstro();
+            Monsters usuario = turno.getUnidadeJogadorAtual().getMonstro();
 			
             if (BattleAction.verificarCustoHabilidade(usuario, skillSelecionada)){
 				for (Monsters alvo : monstrosAlvos){
-					BattleUnit unidadeAlvo = BattleTurn.getUnidadePorMonstro(alvo);
+					BattleUnit unidadeAlvo = turno.getUnidadePorMonstro(alvo);
 					if (unidadeAlvo != null) unidadeAlvo.setAlvo(true);
 				}
 				
-				resultadoAção = BattleAction.executarHabilidade(usuario, monstrosAlvos, skillSelecionada);
+				resultadoAção = BattleAction.executarHabilidade(usuario, monstrosAlvos, skillSelecionada, turno);
 				
 				if (!resultadoAção.isAcerto()) Audio.tocarSom("Miss", 0.1f);
 				if (resultadoAção.isAcerto() && resultadoAção.getDanoRealizado() > 0) Audio.tocarSom("Damage", 0.1f);
@@ -937,15 +943,15 @@ public final class BattleField {
 				
 				if (especialAtivo) especialAtivo = false;
 				selecionarAlvo = false;
-				Battle.exibirMensagemAliado(nomeMonstro, ultimaSkill, dano);
+				batalha.exibirMensagemAliado(nomeMonstro, ultimaSkill, dano);
             }
         }
     }
 	
 	protected void recarregarEnergiaUsuário(){		
-        if (!BattleTurn.isAguardandoTurno() || !BattleTurn.isTurnoJogador()) return;
-        if (BattleTurn.getUnidadeJogadorAtual() == null) return;
-        Monsters usuario = BattleTurn.getUnidadeJogadorAtual().getMonstro();
+        if (!turno.isAguardandoTurno() || !turno.isTurnoJogador()) return;
+        if (turno.getUnidadeJogadorAtual() == null) return;
+        Monsters usuario = turno.getUnidadeJogadorAtual().getMonstro();
         
         BattleAction.recarregarEnergia(usuario);
 		if (selecionarAlvo) selecionarAlvo = false;
@@ -954,7 +960,7 @@ public final class BattleField {
 		Audio.tocarSom("Charge", 0.1f);
 		
 		String frase = usuario.getNomeMonstro()+" recarrega.";
-		Battle.exibirMensagemAliado(frase, null, null);
+		batalha.exibirMensagemAliado(frase, null, null);
     }
 	
 	protected void ativarEspecial(){
@@ -964,9 +970,9 @@ public final class BattleField {
 			return;
 		}
 		
-		if (!BattleTurn.isAguardandoTurno() || !BattleTurn.isTurnoJogador()) return;
+		if (!turno.isAguardandoTurno() || !turno.isTurnoJogador()) return;
 		if (skillEspecial == null || selecionarAlvo) return;
-		if (BattleTurn.getUnidadeJogadorAtual() == null) return;
+		if (turno.getUnidadeJogadorAtual() == null) return;
 		
 		skillSelecionada = skillEspecial;
 		
@@ -1020,7 +1026,7 @@ public final class BattleField {
 	
 	private void finalizarBatalha(){
 		if (vitóriaBatalha){
-			Battle.setSubEstadoAtual(Battle.SubEstadosBatalha.VITORIA);
+			batalha.setSubEstadoAtual(Battle.SubEstadosBatalha.VITORIA);
 			
 			int exp = tropa.getExp();
 			int ouro = tropa.getOuro();
@@ -1032,7 +1038,7 @@ public final class BattleField {
 			}
 			Player.ganharOuro(ouro);
 		}else{
-			Battle.setSubEstadoAtual(Battle.SubEstadosBatalha.DERROTA);
+			batalha.setSubEstadoAtual(Battle.SubEstadosBatalha.DERROTA);
 		}
 	}
 	
@@ -1109,7 +1115,7 @@ public final class BattleField {
 		this.aguardandoInimigo = false;
 		this.resultadoAção = null;
 		
-		BattleTurn.finalizarTurno();
+		turno.finalizarTurno();
 		if (this.batalhaFinalizada) finalizarBatalha();
 	}
 	
@@ -1121,17 +1127,17 @@ public final class BattleField {
 		
         skillSelecionada = null;
 		skillUsada = null;
-		BattleTurn.setAguardandoTurno(false);
+		turno.setAguardandoTurno(false);
 		monstrosAlvos.clear();
 		
-		BattleTurn.finalizarTurno();
+		turno.finalizarTurno();
 		if (this.batalhaFinalizada) finalizarBatalha();
 	}
 	
 	protected void processarTurno(){
 		verificarMonstros();
 		
-		if (!BattleTurn.isAguardandoTurno() && !BattleTurn.isTurnoJogador()){
+		if (!turno.isAguardandoTurno() && !turno.isTurnoJogador()){
 			if (!isAguardandoConfirmação()){
 				inimigoAI.turnoInimigo();
 			}

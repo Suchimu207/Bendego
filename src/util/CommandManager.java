@@ -44,8 +44,7 @@ public final class CommandManager {
     
     private static void registrarComandos(){
         comandos.put("player", new PlayerCommand());
-        // comandos.put("battle", new BattleCommand());
-        // comandos.put("troop", new TroopCommand());
+        comandos.put("battle", new BattleCommand());
     }
     
     private static void executarComando(String comando, String[] args){
@@ -91,9 +90,10 @@ public final class CommandManager {
 		String uso = "Comandos: \n"+
 		">>cls|clear: Limpa o prompt. \n"+
 		">>reload: Recarrega os dados do jogo. \n"+
-		">>player: "+new PlayerCommand().getDescricao();
+		">>player: "+new PlayerCommand().getDescricao()+"\n"+
+		">>battle: "+new BattleCommand().getDescricao();
 		
-        System.out.println(uso);
+        System.out.println("\n"+uso);
     }
 	
     public static void parar(){

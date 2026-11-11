@@ -10,16 +10,16 @@ import combat.effects.EffectsStrategy;
 public class EffectsActionAdvance implements EffectsStrategy {
 
     @Override
-    public void aplicar(Monsters usuario, Monsters alvo, Skills habilidade, Effects efeito){
-		if (usuario == null || alvo == null || efeito == null) return;
+    public void aplicar(Monsters usuario, Monsters alvo, Skills habilidade, Effects efeito, BattleTurn turno){
+		if (usuario == null || alvo == null || efeito == null || turno == null) return;
 		
-        BattleUnit unidade = BattleTurn.getUnidadePorMonstro(alvo);
+        BattleUnit unidade = turno.getUnidadePorMonstro(alvo);
         
 		int efeitoValor = efeito.getValor();
 		
 		if (unidade != null && efeitoValor > 0){
             if (efeitoValor >= 100){
-                BattleTurn.forcarProximoTurno(unidade);
+                turno.forcarProximoTurno(unidade);
             }else{
                 unidade.avancarAção(efeitoValor);
             }

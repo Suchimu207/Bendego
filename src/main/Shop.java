@@ -90,6 +90,8 @@ public final class Shop implements GameState{
 	
 	private static final int MAX_MONSTERS_PAG = 30;
 	
+	private static final int[] ITEMS_PRICES = {150, 350, 500, 1200, 3000};
+	
     public Shop(){
 		Shop.limparCarrinho();
 		filtroRaridadeAtual = null;
@@ -117,9 +119,9 @@ public final class Shop implements GameState{
 			Monsters infoMonstro = MonstersManager.getMonstro(i);
 			if (infoMonstro == null) continue;
 			
-			if (infoMonstro.getRaridadeMonstro() == Monsters.Raridades.INCOMUM){
-				preco = 350;
-			}else if (infoMonstro.getRaridadeMonstro() == Monsters.Raridades.RARO){
+			preco = definirPreçoItem(infoMonstro.getRaridadeMonstro());
+			
+			if (infoMonstro.getRaridadeMonstro() == Monsters.Raridades.RARO){
 				continue;
 			}else if (infoMonstro.getRaridadeMonstro() == Monsters.Raridades.EPICO){
 				continue;
@@ -555,6 +557,35 @@ public final class Shop implements GameState{
         int novoIdEstante = estoque.size()+1;
         estoque.add(new ItemLoja(idMonstro, preco, novoIdEstante));
     }
+	
+	public static void adicionarItemEstoque(int idMonstro){
+		Monsters infoMonstro = MonstersManager.getMonstro(idMonstro);
+		if (infoMonstro == null) return;
+		
+		int preco = definirPreçoItem(infoMonstro.getRaridadeMonstro());
+		
+       adicionarItemEstoque(idMonstro, preco); 
+    }
+	
+	private static int definirPreçoItem(Monsters.Raridades raridade){
+		if (raridade == Monsters.Raridades.COMUM){
+			return ITEMS_PRICES[0];
+		}
+		if (raridade == Monsters.Raridades.INCOMUM){
+			return ITEMS_PRICES[1];
+		}
+		if (raridade == Monsters.Raridades.RARO){
+			return ITEMS_PRICES[2];
+		}
+		if (raridade == Monsters.Raridades.EPICO){
+			return ITEMS_PRICES[3];
+		}
+		if (raridade == Monsters.Raridades.LENDARIO){
+			return ITEMS_PRICES[4];
+		}
+		
+		return 0;
+	}
 	
 	public static ItemLoja getItemPorMonstroId(int idMonstro){
 		if (estoque == null || idMonstro <= 0){

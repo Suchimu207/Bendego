@@ -18,19 +18,22 @@ public final class BattlePreparation {
 	private Skills skillMostrada;
 	private Monsters[] monstroSlotsAtivos;
 	
+	private final Battle batalhaAtiva;
+	
 	private int linhaAtual, linhaInicial, linhaMax,
 	posiçãoLinhaX, posiçãoLinhaY, posiçãoLinhaBatalha;
 	
-	protected BattlePreparation(){
+	protected BattlePreparation(Battle batalhaAtiva){
+		this.batalhaAtiva = batalhaAtiva;
 	}
 	
 	public void desenhaTelaPreparo(){
 		Grapchics.limpaTela();
 		
-		Battle.setMonstroMostrado(null);
+		batalhaAtiva.setMonstroMostrado(null);
 		
-		Troop tropaCarregada = Battle.getTropaCarregada();
-		Monsters[] monstroSlotsAtivos = Battle.getMonstroSlotsAtivos();
+		Troop tropaCarregada = batalhaAtiva.getTropaCarregada();
+		Monsters[] monstroSlotsAtivos = batalhaAtiva.getMonstroSlotsAtivos();
 		
 		if (tropaCarregada == null || monstroSlotsAtivos == null) return;
 		
@@ -40,7 +43,7 @@ public final class BattlePreparation {
 		Grapchics.desenhaCentroTTF("Batalha",0, Grapchics.BRANCO_CLARO);
 		Grapchics.desenhaTTF("E: Voltar", 0,linhaAtual++, Grapchics.PRETO_CLARO);
 		
-		if (Battle.isEquipeSetada()){
+		if (batalhaAtiva.isEquipeSetada()){
 			Grapchics.desenhaTTF("Q: Iniciar batalha",0,linhaAtual++, Grapchics.PRETO_CLARO);
 		}
 		
@@ -67,7 +70,7 @@ public final class BattlePreparation {
 			if(monstro == null){
 				if (Input.getCursorY() == linhaAtual){
 					Grapchics.desenhaTTF("["+(i+1)+"]", 0, linhaAtual++, Grapchics.AMARELO_CLARO);
-					Battle.setMonstroMostrado(null);
+					batalhaAtiva.setMonstroMostrado(null);
 				}else{
 					Grapchics.desenhaTTF("["+(i+1)+"]", 0, linhaAtual++, Grapchics.PRETO_CLARO);
 				}
@@ -75,7 +78,7 @@ public final class BattlePreparation {
 				if (Input.getCursorY() == linhaAtual){
 					Grapchics.desenhaTTF(monstro.getNomeMonstro()+" Nv"+monstro.getNivelAtual(), 0, linhaAtual++, 
 					Grapchics.AMARELO_CLARO);
-					Battle.setMonstroMostrado(monstro);
+					batalhaAtiva.setMonstroMostrado(monstro);
 				}else{
 					Grapchics.desenhaTTF(monstro.getNomeMonstro()+" Nv"+monstro.getNivelAtual(), 0, linhaAtual++, 
 					Grapchics.BRANCO_CLARO);
@@ -93,10 +96,10 @@ public final class BattlePreparation {
 			
 			if (monstroEquipe != null){
 				if (Input.getCursorY() == linhaAtual){
-					Battle.setMonstroMostrado(null);
+					batalhaAtiva.setMonstroMostrado(null);
 					nomeMonstroExibido = monstroEquipe.getNomeMonstro()+" Nv"+monstroEquipe.getNivelAtual();
 					Grapchics.desenhaTTF(nomeMonstroExibido, 0, linhaAtual++, Grapchics.AMARELO_CLARO);
-					Battle.setMonstroMostrado(monstroEquipe);
+					batalhaAtiva.setMonstroMostrado(monstroEquipe);
 				}else{
 					nomeMonstroExibido = monstroEquipe.getNomeMonstro()+" Nv"+monstroEquipe.getNivelAtual();
 					Grapchics.desenhaTTF(nomeMonstroExibido, 0, linhaAtual++, Grapchics.BRANCO_CLARO);
@@ -104,7 +107,7 @@ public final class BattlePreparation {
 			}else{
 				if (Input.getCursorY() == linhaAtual){
 					Grapchics.desenhaTTF("[Vazio]", 0, linhaAtual++, Grapchics.AMARELO_CLARO);
-					Battle.setMonstroMostrado(null);
+					batalhaAtiva.setMonstroMostrado(null);
 				}else{
 					Grapchics.desenhaTTF("[Vazio]", 0, linhaAtual++, Grapchics.PRETO_CLARO);
 				}

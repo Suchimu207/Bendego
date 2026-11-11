@@ -3,6 +3,7 @@ package main.inventory;
 import static main.Terminal.mudarEstado;
 
 import bestiary.Monsters;
+import main.Shop;
 import manager.MonstersManager;
 import manager.MonstersDescriptionManager;
 import bestiary.Skills;
@@ -87,6 +88,7 @@ public final class Inventory implements GameState{
 	
 	private static void montarEquipeInicial(){
 		Inventory.adicionarMonstroInventário(PANDAKEN_ID);
+		Shop.adicionarItemEstoque(PANDAKEN_ID);
 		Monsters monstro = Inventory.getMonstroInventario(1);
 	}
 	

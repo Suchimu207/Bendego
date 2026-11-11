@@ -3,13 +3,15 @@ package combat.effects.strategies;
 import bestiary.Monsters;
 import bestiary.Skills;
 
+import combat.BattleTurn;
+
 import combat.effects.Effects;
 import combat.effects.EffectsStrategy;
 
 public class EffectsChargeEsp implements EffectsStrategy {
     
     @Override
-    public void aplicar(Monsters usuario, Monsters alvo, Skills habilidade, Effects efeito){
+    public void aplicar(Monsters usuario, Monsters alvo, Skills habilidade, Effects efeito, BattleTurn turno){
         if (alvo == null || usuario == null || habilidade == null || efeito == null) return;
         
         int adição = efeito.getValor();

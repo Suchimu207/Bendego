@@ -27,10 +27,16 @@ public final class InventoryScreen {
         String pag = "Inventário - Página";
         Grapchics.desenhaCentroTTF(pag, 0, Grapchics.BRANCO_CLARO);
         Grapchics.desenhaTela(" " + paginaAtual + "/" + totalPaginas, pag.length() + 10, 0, Grapchics.BRANCO_CLARO);
-
+		
         Grapchics.desenhaTTF("E: Voltar", 0, 1, Grapchics.PRETO_CLARO);
-        Grapchics.desenhaTTF("Enter: Equipar/Desequipar", 0, 2, Grapchics.PRETO_CLARO);
-        Grapchics.desenhaTTF("Shift: Ver detalhes", 0, 3, Grapchics.PRETO_CLARO);
+		
+		String equip = "Enter: Equipar";
+		
+        Grapchics.desenhaTTF(equip, 0, 2, Grapchics.PRETO_CLARO);
+		Grapchics.desenhaTela("/", equip.length(), 2, Grapchics.PRETO_CLARO);
+		Grapchics.desenhaTTF("Desequipar", equip.length()+1, 2, Grapchics.PRETO_CLARO);
+		
+		Grapchics.desenhaTTF("Shift: Ver detalhes", 0, 3, Grapchics.PRETO_CLARO);
         Grapchics.desenhaTela("____________________", 0, 4, Grapchics.PRETO_CLARO);
 
         int linhaFimLista = desenhaListaInventario(monstrosInventario, paginaAtual, cursorY);
@@ -85,8 +91,14 @@ public final class InventoryScreen {
         Grapchics.desenhaCentroTTF("Detalhes - Inventário", 0, Grapchics.BRANCO_CLARO);
         Grapchics.desenhaTTF("E: Voltar", 0, 1, Grapchics.PRETO_CLARO);
         Grapchics.desenhaTTF("Q: Biografia", 0, 2, Grapchics.PRETO_CLARO);
-        Grapchics.desenhaTTF("Enter: Marcar/Desmarcar favorito", 0, 3, Grapchics.PRETO_CLARO);
-        Grapchics.desenhaTTF("Shift: Ver habilidades", 0, 4, Grapchics.PRETO_CLARO);
+		
+		String mark = "Enter: Marcar";
+		
+        Grapchics.desenhaTTF(mark, 0, 3, Grapchics.PRETO_CLARO);
+		Grapchics.desenhaTela("/", mark.length(), 3, Grapchics.PRETO_CLARO);
+        Grapchics.desenhaTTF("Desmarcar favorito", mark.length()+1, 3, Grapchics.PRETO_CLARO);
+		
+		Grapchics.desenhaTTF("Shift: Ver habilidades", 0, 4, Grapchics.PRETO_CLARO);
 
         Grapchics.desenhaTela("____________________", 0, 5, Grapchics.PRETO_CLARO);
 
@@ -223,8 +235,14 @@ public final class InventoryScreen {
 
         Grapchics.desenhaCentroTTF("Habilidades", 0, Grapchics.BRANCO_CLARO);
         Grapchics.desenhaTTF("E: Voltar", 0, 1, Grapchics.PRETO_CLARO);
-        Grapchics.desenhaTTF("Enter: Ativar/Desativar habilidade", 0, 2, Grapchics.PRETO_CLARO);
-        Grapchics.desenhaTTF("Monstro: " + monstroCarregado.getNomeMonstro() + " Nv" + monstroCarregado.getNivelAtual(), 0, 3, Grapchics.BRANCO_CLARO);
+		
+		String activate = "Enter: Ativar";
+		
+        Grapchics.desenhaTTF(activate, 0, 2, Grapchics.PRETO_CLARO);
+        Grapchics.desenhaTela("/", activate.length(), 2, Grapchics.PRETO_CLARO);
+		Grapchics.desenhaTTF("Desativar habilidade", activate.length()+1, 2, Grapchics.PRETO_CLARO);
+		
+		Grapchics.desenhaTTF("Monstro: " + monstroCarregado.getNomeMonstro() + " Nv" + monstroCarregado.getNivelAtual(), 0, 3, Grapchics.BRANCO_CLARO);
         Grapchics.desenhaTela("____________________", 0, 4, Grapchics.PRETO_CLARO);
 
         int linha = 5;

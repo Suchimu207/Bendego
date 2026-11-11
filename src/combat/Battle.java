@@ -41,38 +41,40 @@ public final class Battle implements GameState{
 		}
 	}
 	
-	private static SubEstadosBatalha subEstadoAtual;
-	private static Monsters[] monstroSlotsAtivos;
-	private static Troop tropaCarregada;
+	private SubEstadosBatalha subEstadoAtual;
+	private Monsters[] monstroSlotsAtivos;
+	private Troop tropaCarregada;
 	
-	private static BattlePreparation menu;
-	private static BattleField campoBatalha;
-
-	private static Monsters monstroMostrado;
-	private static Skills skillMostrada;
+	private BattlePreparation menu;
+	private BattleField campoBatalha;
+	private BattleTurn turno;
 	
-	private static List<Effects> efeitos;
+	private Monsters monstroMostrado;
+	private Skills skillMostrada;
 	
-	private static boolean vitória;
+	private List<Effects> efeitos;
+	
+	private boolean vitória;
 	
 	public Battle(Troop tropaCarregada){
-		Battle.subEstadoAtual = SubEstadosBatalha.PREPARO;
-		Battle.menu = new BattlePreparation();
-		Battle.monstroSlotsAtivos = new Monsters[3];
-		Battle.tropaCarregada = tropaCarregada;
+		this.subEstadoAtual = SubEstadosBatalha.PREPARO;
+		this.menu = new BattlePreparation(this);
+		this.turno = new BattleTurn(this);
+		this.monstroSlotsAtivos = new Monsters[3];
+		this.tropaCarregada = tropaCarregada;
 		
-		Battle.campoBatalha = null;
-		Battle.vitória = false;
+		this.campoBatalha = null;
+		this.vitória = false;
 	}
 	
 	public Battle(Troop tropaCarregada, List<Effects> efeitos){
 		this(tropaCarregada);
 		if (efeitos == null || efeitos.size() <= 0) return;
 		
-		Battle.efeitos = efeitos;
+		this.efeitos = efeitos;
 	}
 	
-	private static void atualizarEstadoBatalha(){
+	private void atualizarEstadoBatalha(){
 		if (subEstadoAtual == SubEstadosBatalha.CAMPO && campoBatalha != null){
 			campoBatalha.processarTurno();
 		}
@@ -82,7 +84,7 @@ public final class Battle implements GameState{
 	
 	@Override
 	public void atualizaEstado(){
-		Battle.atualizarEstadoBatalha();
+		atualizarEstadoBatalha();
 	}
 	
 	@Override
@@ -140,29 +142,29 @@ public final class Battle implements GameState{
 	
 	// ==================== TECLAS ====================
 	
-	private static void teclaEsquerda(){
+	private void teclaEsquerda(){
 		Input.decrementarCursorX();
 		if (campoBatalha != null && subEstadoAtual == SubEstadosBatalha.CAMPO_DETALHES){
 			campoBatalha.alternarDetalhe(false);
 		}
 	}
 	
-	private static void teclaDireita(){
+	private void teclaDireita(){
 		Input.incrementarCursorX();
 		if (campoBatalha != null && subEstadoAtual == SubEstadosBatalha.CAMPO_DETALHES){
 			campoBatalha.alternarDetalhe(true);
 		}
 	}
 	
-	private static void teclaCima(){
+	private void teclaCima(){
 		Input.decrementarCursorY();
 	}
 	
-	private static void teclaBaixo(){
+	private void teclaBaixo(){
 		Input.incrementarCursorY();
 	}
 	
-	private static void teclaEnter(){
+	private void teclaEnter(){
 		if (subEstadoAtual == SubEstadosBatalha.VITORIA){
 			Terminal.mudarEstado(Terminal.getEstadoAnterior());
 		}
@@ -180,7 +182,7 @@ public final class Battle implements GameState{
 		}
 	}
 	
-	private static void teclaShift(){
+	private void teclaShift(){
 		if (subEstadoAtual == SubEstadosBatalha.CAMPO){
 			if (campoBatalha != null){
 				campoBatalha.recarregarEnergiaUsuário();
@@ -188,7 +190,7 @@ public final class Battle implements GameState{
 		}
 	}
 	
-	private static void teclaE(){
+	private void teclaE(){
 		if (subEstadoAtual == SubEstadosBatalha.PREPARO){
 			subEstadoAtual = null;
 			Terminal.mudarEstado(Terminal.getEstadoAnterior());
@@ -196,7 +198,7 @@ public final class Battle implements GameState{
 		
 		if (subEstadoAtual == SubEstadosBatalha.CAMPO){
 			if (campoBatalha != null){
-				if (BattleTurn.isTurnoJogador()){
+				if (turno.isTurnoJogador()){
 					Input.resetarCursor();
 					int detalheAtual = BattleField.TipoDetalhe.ALIADO.getValor();
 					campoBatalha.setDetalheAtual(detalheAtual);
@@ -211,10 +213,10 @@ public final class Battle implements GameState{
 		}
 	}
 	
-	private static void teclaQ(){
+	private void teclaQ(){
 		if (subEstadoAtual == SubEstadosBatalha.PREPARO){
 			if (isEquipeSetada() && tropaCarregada != null){
-				campoBatalha = new BattleField(Battle.monstroSlotsAtivos, Battle.tropaCarregada, Battle.efeitos);
+				campoBatalha = new BattleField(this, this.monstroSlotsAtivos, this.tropaCarregada, this.efeitos, this.turno);
 				subEstadoAtual = SubEstadosBatalha.CAMPO;
 			}
 		}
@@ -230,7 +232,7 @@ public final class Battle implements GameState{
 	
 	// ==================== AÇÕES DO JOGADOR ====================
 	
-	private static void alternarMonstroSlotsAtivos(){
+	private void alternarMonstroSlotsAtivos(){
 		if (monstroMostrado == null) return;
 		
 		int maxSlotsAtivos = monstroSlotsAtivos.length;
@@ -259,7 +261,7 @@ public final class Battle implements GameState{
 	
 	// ==================== MÉTODOS AUXILIARES ====================
 	
-	private static void reordenarMonstroSlotsAtivos(){
+	private void reordenarMonstroSlotsAtivos(){
 		int writeIndex = 0;
 		for (int i = 0; i <= monstroSlotsAtivos.length-1; i++){
 			if (monstroSlotsAtivos[i] != null){
@@ -271,7 +273,7 @@ public final class Battle implements GameState{
 		}
 	}
 	
-	protected static boolean isEquipeSetada(){
+	protected boolean isEquipeSetada(){
 		if (monstroSlotsAtivos == null) return false;
 		
 		for (Monsters monstro : monstroSlotsAtivos){
@@ -282,13 +284,13 @@ public final class Battle implements GameState{
 		return false;
 	}
 	
-	protected static void exibirMensagemInimigo(String mensagem, Skills habilidadeUsada, String dano){
+	protected void exibirMensagemInimigo(String mensagem, Skills habilidadeUsada, String dano){
 		if (campoBatalha != null){
 			campoBatalha.setMensagemInimigo(mensagem, habilidadeUsada, dano);
 		}
 	}
 	
-	protected static void exibirMensagemAliado(String mensagem, Skills habilidadeUsada, String dano){
+	protected void exibirMensagemAliado(String mensagem, Skills habilidadeUsada, String dano){
 		if (campoBatalha != null){
 			campoBatalha.setMensagemAliado(mensagem, habilidadeUsada, dano);
 		}
@@ -296,35 +298,43 @@ public final class Battle implements GameState{
 	
 	// ==================== OUTROS ====================
 	
-	protected static Monsters[] getMonstroSlotsAtivos(){
+	protected Monsters[] getMonstroSlotsAtivos(){
 		return monstroSlotsAtivos;
 	}
 	
-	protected static Troop getTropaCarregada(){
-		return Battle.tropaCarregada;
+	public Monsters[] getMonstrosAliados(){
+		return monstroSlotsAtivos.clone();
+	}
+	
+	protected Troop getTropaCarregada(){
+		return this.tropaCarregada;
+	}
+	
+	public Troop getMonstrosInimigos(){
+		return this.tropaCarregada.clone();
 	}
 	
 	protected SubEstadosBatalha getSubEstadoAtual(){
 		return subEstadoAtual;
 	}
 	
-	protected static void setMonstroMostrado(Monsters monstroMostrado){
-		Battle.monstroMostrado = monstroMostrado;
+	protected void setMonstroMostrado(Monsters monstroMostrado){
+		this.monstroMostrado = monstroMostrado;
 	}
 	
-	protected static void setSubEstadoAtual(SubEstadosBatalha subEstadoAtual){
-		Battle.subEstadoAtual = subEstadoAtual;
+	protected void setSubEstadoAtual(SubEstadosBatalha subEstadoAtual){
+		this.subEstadoAtual = subEstadoAtual;
 	}
 	
-	public static boolean verificarVitória(){
+	public boolean verificarVitória(){
 		if (campoBatalha != null){
-			Battle.vitória = campoBatalha.isVitóriaBatalha();
+			this.vitória = campoBatalha.isVitóriaBatalha();
 		}
-		return Battle.vitória;
+		return this.vitória;
 	}
 	
-	public static void resetarVitória(){
-		Battle.vitória = false;
+	public void resetarVitória(){
+		this.vitória = false;
 	}
 	
 	//===

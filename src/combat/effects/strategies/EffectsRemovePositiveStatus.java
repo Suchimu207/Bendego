@@ -3,6 +3,8 @@ package combat.effects.strategies;
 import bestiary.Monsters;
 import bestiary.Skills;
 
+import combat.BattleTurn;
+
 import combat.effects.Effects;
 import combat.effects.EffectsStrategy;
 
@@ -12,7 +14,7 @@ import combat.status.StatusBase;
 public class EffectsRemovePositiveStatus implements EffectsStrategy {
 	
     @Override
-    public void aplicar(Monsters usuario, Monsters alvo, Skills habilidade, Effects efeito){
+    public void aplicar(Monsters usuario, Monsters alvo, Skills habilidade, Effects efeito, BattleTurn turno){
         if (alvo == null || usuario == null || habilidade == null || efeito == null) return;
 		
 		alvo.getStatusAtuais().removeIf(status -> 

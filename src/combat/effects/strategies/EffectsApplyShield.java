@@ -7,6 +7,7 @@ import combat.effects.Effects;
 import combat.effects.EffectsStrategy;
 
 import manager.StatusManager;
+import combat.BattleTurn;
 import combat.status.StatusBase;
 
 public class EffectsApplyShield implements EffectsStrategy {
@@ -14,7 +15,7 @@ public class EffectsApplyShield implements EffectsStrategy {
 	private StatusBase status;
 	
     @Override
-    public void aplicar(Monsters usuario, Monsters alvo, Skills habilidade, Effects efeito){
+    public void aplicar(Monsters usuario, Monsters alvo, Skills habilidade, Effects efeito, BattleTurn turno){
         if (alvo == null || usuario == null || efeito == null) return;
         
         int efeitoValor = efeito.getValor();

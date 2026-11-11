@@ -50,6 +50,11 @@ public class Troop {
         this.ouro = troopRequerida.getOuro();
     }
 	
+	@Override
+	public Troop clone(){
+		return new Troop(this);
+	}
+	
     public int getId(){ 
 		return id; 
 	}

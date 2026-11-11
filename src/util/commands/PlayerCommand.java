@@ -11,7 +11,7 @@ public class PlayerCommand implements Command {
     @Override
     public void executar(String[] args) throws Exception{
         if (args.length < 1){
-            System.out.println(getUso());
+            System.out.println("\n"+getUso());
             return;
         }
         

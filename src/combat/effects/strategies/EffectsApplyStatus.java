@@ -7,6 +7,7 @@ import combat.effects.Effects;
 import combat.effects.EffectsStrategy;
 
 import manager.StatusManager;
+import combat.BattleTurn;
 import combat.status.StatusBase;
 
 import java.util.Random;
@@ -24,7 +25,7 @@ public class EffectsApplyStatus implements EffectsStrategy {
 	public EffectsApplyStatus(){}
 	
     @Override
-    public void aplicar(Monsters usuario, Monsters alvo, Skills habilidade, Effects efeito){
+    public void aplicar(Monsters usuario, Monsters alvo, Skills habilidade, Effects efeito, BattleTurn turno){
         if (usuario == null || alvo == null || efeito == null) return;
 		
 		this.usuario = usuario;
