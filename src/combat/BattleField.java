@@ -84,12 +84,6 @@ public final class BattleField {
 	
 	// ==================== CONSTRUTOR ====================
 	
-	protected BattleField(Monsters[] aliados, Troop tropa){
-		setarCampo(aliados, tropa);
-		prepararMonstros();
-		inicializarActionValue();
-	}
-	
 	protected BattleField(Battle batalha, Monsters[] aliados, Troop tropa, List<Effects> efeitosIniciais, BattleTurn turno){
 		this.batalha = batalha;
 		this.efeitosIniciais = efeitosIniciais;	
@@ -470,8 +464,8 @@ public final class BattleField {
 	
 	private Color corPorPercentualVida(double percentual){
 		if (percentual > 0.5) return Grapchics.VERDE_CLARO;
-		if (percentual > 0.10) return Grapchics.VERMELHO_CLARO;
-		return Grapchics.VERDE_CLARO;
+		if (percentual > 0.25) return Grapchics.AMARELO_CLARO;
+		return Grapchics.VERMELHO_CLARO;
 	}
 	
 	private void desenhaSetaBatalha(){    
@@ -876,7 +870,7 @@ public final class BattleField {
 					.append(" (").append(status.getDuraçãoAtual()).append("t)");
 				}
 				
-				if (status.isPositivo() && status != null){
+				if (status != null && status.isPositivo()){
 					indicador = "[+] ";
 					Grapchics.desenhaTela(indicador, 0, linhaAtual, Grapchics.VERDE_CLARO);
 				}else if (!status.isPositivo() && status != null){
@@ -1037,6 +1031,7 @@ public final class BattleField {
 				aliados[i].ganharExp(exp);
 			}
 			Player.ganharOuro(ouro);
+			Audio.tocarMusica("Victory", false, 0.1f);
 		}else{
 			batalha.setSubEstadoAtual(Battle.SubEstadosBatalha.DERROTA);
 		}
@@ -1170,6 +1165,14 @@ public final class BattleField {
 	
 	protected boolean isVitóriaBatalha(){
 		return vitóriaBatalha;
+	}
+	
+	protected int getTropaExp(){
+		return tropa.getExp();
+	}
+	
+	protected int getTropaOuro(){
+		return tropa.getOuro();
 	}
 	
 	//===

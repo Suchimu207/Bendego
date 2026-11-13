@@ -356,6 +356,11 @@ public class ArenaMode implements GameState{
 	
 	private void verificarResultadoBatalha(){
 		if (this.batalhaAtual != null){
+			if (!this.batalhaAtual.foiIniciada()){
+				this.batalhaAtual = null;
+				Input.setCursorY(rodadaAtual);
+				return;
+			}
 			
 			if (this.batalhaAtual.verificarVitória()){
 				

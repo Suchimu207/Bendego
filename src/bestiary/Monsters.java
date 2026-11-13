@@ -563,7 +563,7 @@ public class Monsters {
 	
 	public void ganharEstamina(int regen){
 		if (regen <= 0) return;
-    
+		
 		int estaminaMaxima = this.getEstaminaAtual();
 		int estaminaRegen = Math.min(estaminaMaxima, this.getEstaminaAtualCombate()+regen);
 		

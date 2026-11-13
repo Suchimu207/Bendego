@@ -89,6 +89,8 @@ public final class Battle implements GameState{
 	
 	@Override
 	public void desenhaEstado(){
+		if (subEstadoAtual == null) return;
+		
 		switch (subEstadoAtual){
 			case PREPARO:
 				menu.desenhaTelaPreparo();
@@ -104,7 +106,11 @@ public final class Battle implements GameState{
 				}
 				break;
 			case VITORIA:
-				BattleResult.desenhaTelaVitoria();
+				if (campoBatalha != null){
+					BattleResult.desenhaTelaVitoria(
+					campoBatalha.getTropaExp(), 
+					campoBatalha.getTropaOuro());
+				}else BattleResult.desenhaTelaVitoria(0,0);
 				break;
 			case DERROTA:
 				BattleResult.desenhaTelaDerrota();
@@ -166,6 +172,7 @@ public final class Battle implements GameState{
 	
 	private void teclaEnter(){
 		if (subEstadoAtual == SubEstadosBatalha.VITORIA){
+			Audio.pararMusicaFadeOut(2100);
 			Terminal.mudarEstado(Terminal.getEstadoAnterior());
 		}
 		if (subEstadoAtual == SubEstadosBatalha.DERROTA){
@@ -251,9 +258,11 @@ public final class Battle implements GameState{
 		if (slotExistente != -1){
 			monstroSlotsAtivos[slotExistente] = null;
 			reordenarMonstroSlotsAtivos();
+			Input.decrementarCursorY();
 		}else{
 			if (primeiroVazio != -1){
 				monstroSlotsAtivos[primeiroVazio] = monstroMostrado;
+				Input.incrementarCursorY();
 			}
 		}
 		
@@ -331,6 +340,10 @@ public final class Battle implements GameState{
 			this.vitória = campoBatalha.isVitóriaBatalha();
 		}
 		return this.vitória;
+	}
+	
+	public boolean foiIniciada(){
+		return campoBatalha != null;
 	}
 	
 	public void resetarVitória(){

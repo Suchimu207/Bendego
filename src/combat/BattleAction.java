@@ -27,9 +27,8 @@ public final class BattleAction {
 	protected static void recarregarEnergia(Monsters usuario){
 		int maxEstamina = usuario.getEstaminaAtual();
 		int regneração = (int) Math.ceil(maxEstamina * 0.5); 
-		int novaEstamina = regneração + usuario.getEstaminaAtualCombate();
 		
-		usuario.ganharEstamina(novaEstamina);
+		usuario.ganharEstamina(regneração);
 	}
 	
 	// ==================== VERIFICAÇÃO ====================

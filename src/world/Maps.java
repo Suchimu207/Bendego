@@ -32,6 +32,8 @@ public final class Maps implements GameState{
 	public static final char LOJA = '$';
 	public static final char ARENA = 'A';
 	public static final char PORTAL = '-';
+	public static final char AGUA = '~';
+	public static final char ARVORE = '^';
 	
 	private static Map<String, String> mapasExistentes; 
 	private static String mapaAtual, mapaInicial, mapaVerificado;
@@ -192,6 +194,12 @@ public final class Maps implements GameState{
 					case Maps.OCORRÊNCIA:
 					Grapchics.desenhaTela('?', jColuna, iLinha, Grapchics.AMARELO_CLARO);
 					break;
+					case Maps.AGUA:
+					Grapchics.desenhaTela((char)254, jColuna, iLinha, Grapchics.AZUL_CLARO);
+					break;
+					case Maps.ARVORE:
+					Grapchics.desenhaTela((char)249, jColuna, iLinha, Grapchics.VERDE_CLARO);
+					break;
 					}
 				}
 			}
@@ -235,7 +243,7 @@ public final class Maps implements GameState{
 			return true;
 		}
 		
-		return linhaAlvo.charAt(jogadorX) == Maps.PAREDE;
+		return linhaAlvo.charAt(jogadorX) == Maps.PAREDE || linhaAlvo.charAt(jogadorX) == Maps.AGUA;
 	}
 	
 	private static char ehEvento(String mapaNome, int jogadorX, int jogadorY){
