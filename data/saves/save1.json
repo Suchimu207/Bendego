@@ -1,0 +1,75 @@
+{
+  "version": "0.0.62",
+  "inventario": {
+    "monstros": [
+      {
+        "habilidadesAtivas": [
+          220,
+          22,
+          158,
+          221
+        ],
+        "instanceId": "7824c8e5-b5a2-46f9-b07f-a02a82561f6a",
+        "favorito": false,
+        "expAtual": 0,
+        "idEspecie": 41,
+        "nivelAtual": 40
+      },
+      {
+        "habilidadesAtivas": [
+          36,
+          35,
+          33,
+          31
+        ],
+        "instanceId": "0d5faa5c-8990-467a-b5ce-f79f944652f7",
+        "favorito": false,
+        "expAtual": 0,
+        "idEspecie": 5,
+        "nivelAtual": 40
+      },
+      {
+        "habilidadesAtivas": [
+          169,
+          129,
+          103,
+          44
+        ],
+        "instanceId": "aa346c99-b54a-4597-84b3-3f94486ad057",
+        "favorito": false,
+        "expAtual": 0,
+        "idEspecie": 10,
+        "nivelAtual": 40
+      }
+    ],
+    "equipe": [
+      "7824c8e5-b5a2-46f9-b07f-a02a82561f6a",
+      "0d5faa5c-8990-467a-b5ce-f79f944652f7",
+      "aa346c99-b54a-4597-84b3-3f94486ad057",
+      null,
+      null,
+      null
+    ]
+  },
+  "torneios": [
+    {
+      "concluido": false,
+      "id": 1
+    },
+    {
+      "concluido": false,
+      "id": 2
+    },
+    {
+      "concluido": false,
+      "id": 3
+    }
+  ],
+  "player": {
+    "ouro": 1000,
+    "jogadorY": 4,
+    "jogadorX": 9,
+    "torneiosVencidos": 0,
+    "reputaçãoAtual": 1
+  }
+}

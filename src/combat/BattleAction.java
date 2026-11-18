@@ -37,9 +37,9 @@ public final class BattleAction {
 		if (usuario == null || habilidade == null) return false;
 		
 		int estaminaAtualCombate = usuario.getEstaminaAtualCombate();
-		int energiaHabilidade = habilidade.getEnergiaHabilidade();
+		int estaminaHabilidade = habilidade.getEstaminaHabilidade();
 		
-		if (estaminaAtualCombate >= energiaHabilidade){
+		if (estaminaAtualCombate >= estaminaHabilidade){
 			return true;
 		}
 		
@@ -65,11 +65,11 @@ public final class BattleAction {
 	
     protected static BattleActionResult executarHabilidade(Monsters usuario, List<Monsters> alvos, Skills habilidade, BattleTurn turno){		
 		int estaminaAtualCombate = usuario.getEstaminaAtualCombate();
-		int energiaHabilidade = habilidade.getEnergiaHabilidade();
+		int estaminaHabilidade = habilidade.getEstaminaHabilidade();
 		resultados[0] = 0;
 		resultados[1] = BattleActionResult.EFETIVO;
 		
-        usuario.setEstaminaAtualCombate(estaminaAtualCombate - energiaHabilidade);
+        usuario.setEstaminaAtualCombate(estaminaAtualCombate - estaminaHabilidade);
         
 		if (!verificarPrecisao(usuario, alvos, habilidade)){
 			return new BattleActionResult(resultados[0], resultados[1], false);
@@ -126,7 +126,7 @@ public final class BattleAction {
 			}
 		}
 		
-		double multiplicadorNivel = 1.0 + (nivelMonstro / 100.0);
+		double multiplicadorNivel = 0.8 + (nivelMonstro / 100.0);
         double danoBase = Math.ceil((forçaMonstro / 1000.0) * (poderHabilidade) * CONSTANTE * multiplicadorNivel);
 		int danoSomado = 0;
 		

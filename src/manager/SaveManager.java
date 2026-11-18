@@ -62,6 +62,7 @@ public final class SaveManager {
 		JSONObject jsonPlayer = new JSONObject();
 		jsonPlayer.put("ouro", Player.getOuro());
 		jsonPlayer.put("torneiosVencidos", Player.getTorneiosVencidos());
+		jsonPlayer.put("reputaçãoAtual", Player.getReputaçãoAtual());
 		jsonPlayer.put("jogadorX", Player.getJogadorX());
 		jsonPlayer.put("jogadorY", Player.getJogadorY());
 		return jsonPlayer;
@@ -161,6 +162,7 @@ public final class SaveManager {
 
 		Player.setOuro(jsonPlayer.optInt("ouro", Player.getOuro()));
 		Player.setTorneiosVencidos(jsonPlayer.optInt("torneiosVencidos", 0));
+		Player.setReputaçãoAtual(jsonPlayer.optInt("reputaçãoAtual",0));
 		Player.setJogadorX(jsonPlayer.optInt("jogadorX", Player.getJogadorX()));
 		Player.setJogadorY(jsonPlayer.optInt("jogadorY", Player.getJogadorY()));
 	}

@@ -484,7 +484,11 @@ public class Monsters {
 		for (int i = 0; i < niveisReais; i++){
 			this.nivelAtual++;
 			this.forçaAtual += (int) Math.ceil((this.forçaBase/3));
-			this.vidaAtual += (int) Math.ceil((this.vidaBase/3));
+			
+			if (this.classeAtual == Classes.TANQUE){
+				this.vidaAtual += (int) Math.ceil((this.vidaBase/2));
+			}else this.vidaAtual += (int) Math.ceil((this.vidaBase/3));
+			
 			this.speedAtual += (int) Math.ceil((this.speedBase/3));
 		}
 		this.desbloquearHabilidades();
@@ -958,7 +962,9 @@ public class Monsters {
 	public void checarStatus(){
 		if (this.statusAtuais.isEmpty() || this.vidaAtualCombate <= 0) return;
 		
-		for (StatusBase status : this.statusAtuais){
+		List<StatusBase> copiaStatus = new ArrayList<>(this.statusAtuais);
+		
+		for (StatusBase status : copiaStatus){
 			if (status != null && status.isAtivo()){
 				status.checar(this);
 			}

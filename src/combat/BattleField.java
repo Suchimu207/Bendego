@@ -1,5 +1,7 @@
 package combat;
 
+import static main.inventory.Inventory.getEquipeLista;
+
 import bestiary.Monsters;
 import bestiary.Skills;
 import bestiary.Troop;
@@ -42,6 +44,36 @@ public final class BattleField {
 		}
 	}
 	
+	protected static class ExpGanhoResultado{
+        private Monsters monstro;
+        private int expGanho;
+        private int niveisSubidos;
+		private boolean presenteNaBatalha;
+		
+        protected ExpGanhoResultado(Monsters monstro, int expGanho, int niveisSubidos, boolean presenteNaBatalha){
+            this.monstro = monstro;
+            this.expGanho = expGanho;
+            this.niveisSubidos = niveisSubidos;
+			this.presenteNaBatalha = presenteNaBatalha;
+        }
+		
+		protected int getExpGanho(){
+			return expGanho;
+		}
+		
+		protected Monsters getMonstroRes(){
+			return monstro;
+		}
+		
+		protected int getNiveisSubidos(){
+			return niveisSubidos;
+		}
+		
+		protected boolean isPresenteNaBatalha(){
+			return presenteNaBatalha;
+		}
+    }
+	
 	// ==================== ATRIBUTOS ====================
 	
 	private Battle batalha;
@@ -81,6 +113,8 @@ public final class BattleField {
 	private int linhaInicial, linhaMáxima, linhaAtual = 0;
 	
 	private int detalheAtual;
+	
+	private List<ExpGanhoResultado> resultadosExp = new ArrayList<>();
 	
 	// ==================== CONSTRUTOR ====================
 	
@@ -592,31 +626,35 @@ public final class BattleField {
 		Grapchics.desenhaTela("____________________",0,linhaAtual++, Grapchics.PRETO_CLARO);
 		for (int i = 0; i <= tamanhoSkills-1; i++){
 			Skills skillCarregada = monstroAtual.getHabilidadeAtiva(i);
+			String habilidadeTexto = "";
+			Color corHabilidadeTexto = null;
 			
 			if (skillCarregada != null){
-				if (Input.getCursorY() == i){					
+				if (Input.getCursorY() == i){
+					Grapchics.desenhaTTF((i+1)+": ",0,linhaAtual, Grapchics.PRETO_CLARO);
+					habilidadeTexto += skillCarregada.getNomeHabilidade();
+					
 					if (skillCarregada.isRecarga() && skillCarregada.getRecargaAtual() > 0){
-						Grapchics.desenhaTTF((i+1)+": ",0,linhaAtual, Grapchics.PRETO_CLARO);
-						Grapchics.desenhaTTF(skillCarregada.getNomeHabilidade()+" - Recarga:"+skillCarregada.getRecargaAtual(),4,linhaAtual++,
-						Grapchics.AMARELO_CLARO);
-						
+						habilidadeTexto += " - Recarga:"+skillCarregada.getRecargaAtual();
 						skillSelecionada = null;
-					}else{
-						Grapchics.desenhaTTF((i+1)+": ",0,linhaAtual, Grapchics.BRANCO_CLARO);
-						Grapchics.desenhaTTF(skillCarregada.getNomeHabilidade(),4,linhaAtual++,Grapchics.AMARELO_CLARO);
-						
-						skillSelecionada = skillCarregada;
-					}						
+					}else skillSelecionada = skillCarregada;
+					
+					Grapchics.desenhaTTF(habilidadeTexto, 4,linhaAtual++, Grapchics.AMARELO_CLARO);	
 				}else{
-					if (skillCarregada.isRecarga() && skillCarregada.getRecargaAtual() > 0){
-						Grapchics.desenhaTTF((i+1)+": ",0,linhaAtual, Grapchics.PRETO_CLARO);
-						Grapchics.desenhaTTF(skillCarregada.getNomeHabilidade()+" - Recarga:"+skillCarregada.getRecargaAtual(),3,linhaAtual++,
-						Grapchics.PRETO_CLARO);
-						
-					}else{
-						Grapchics.desenhaTTF((i+1)+": ",0,linhaAtual, Grapchics.BRANCO_CLARO);
-						Grapchics.desenhaTTF(skillCarregada.getNomeHabilidade(),3,linhaAtual++,skillCarregada.getCorHabilidade());
+					Grapchics.desenhaTTF((i+1)+": ",0,linhaAtual, Grapchics.PRETO_CLARO);
+					habilidadeTexto += skillCarregada.getNomeHabilidade();
+					corHabilidadeTexto = skillCarregada.getCorHabilidade();
+					
+					if (monstroAtual.getEstaminaAtualCombate() < skillCarregada.getEstaminaHabilidade()){
+						corHabilidadeTexto = Grapchics.PRETO_CLARO;
 					}
+					
+					if (skillCarregada.isRecarga() && skillCarregada.getRecargaAtual() > 0){
+						habilidadeTexto += " - Recarga:"+skillCarregada.getRecargaAtual();
+						corHabilidadeTexto = Grapchics.PRETO_CLARO;
+					}
+					
+					Grapchics.desenhaTTF(habilidadeTexto, 3,linhaAtual++, corHabilidadeTexto);
 				}
 			}else{
 				if (Input.getCursorY() == i){
@@ -1025,16 +1063,46 @@ public final class BattleField {
 			int exp = tropa.getExp();
 			int ouro = tropa.getOuro();
 			
-			maxAliados = aliados.length;
-			for (int i = 0; i <= maxAliados-1; i++){
-				if(aliados[i] == null) continue;
-				aliados[i].ganharExp(exp);
-			}
+			distribuirExperiência(exp);
+			
 			Player.ganharOuro(ouro);
 			Audio.tocarMusica("Victory", false, 0.1f);
 		}else{
 			batalha.setSubEstadoAtual(Battle.SubEstadosBatalha.DERROTA);
 		}
+	}
+	
+	private void distribuirExperiência(int exp){
+		int expParcial = Math.round(exp / 2f);
+		resultadosExp.clear();
+		
+		for (Monsters monstro : aliados){
+			if (monstro != null){
+				int nivelAntes = monstro.getNivelAtual();
+				monstro.ganharExp(exp);
+				int niveisSubidos = monstro.getNivelAtual() - nivelAntes;
+				
+				resultadosExp.add(new ExpGanhoResultado(monstro, exp, niveisSubidos, true));
+			}
+		}
+		
+		for (Monsters monstroEquipe : getEquipeLista()){
+			if (monstroEquipe == null || lutouNaBatalha(monstroEquipe)) continue;
+			int nivelAntes = monstroEquipe.getNivelAtual();
+			monstroEquipe.ganharExp(expParcial);
+			int niveisSubidos = monstroEquipe.getNivelAtual() - nivelAntes;
+			
+            resultadosExp.add(new ExpGanhoResultado(monstroEquipe, expParcial, niveisSubidos, false));
+		}
+	}
+	
+	private boolean lutouNaBatalha(Monsters monstroEquipe){
+		for (Monsters monstro : aliados){
+			if (monstro != null && monstro.getInstanceId().equals(monstroEquipe.getInstanceId())){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private boolean todosInimigosDerrotados(){
@@ -1173,6 +1241,10 @@ public final class BattleField {
 	
 	protected int getTropaOuro(){
 		return tropa.getOuro();
+	}
+	
+	protected List<ExpGanhoResultado> getResultadosExp(){
+		return resultadosExp;
 	}
 	
 	//===

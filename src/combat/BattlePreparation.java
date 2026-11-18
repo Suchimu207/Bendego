@@ -95,14 +95,20 @@ public final class BattlePreparation {
 			String nomeMonstroExibido = "";
 			
 			if (monstroEquipe != null){
+				nomeMonstroExibido = monstroEquipe.getNomeMonstro()+" Nv"+monstroEquipe.getNivelAtual();
+				
 				if (Input.getCursorY() == linhaAtual){
 					batalhaAtiva.setMonstroMostrado(null);
-					nomeMonstroExibido = monstroEquipe.getNomeMonstro()+" Nv"+monstroEquipe.getNivelAtual();
-					Grapchics.desenhaTTF(nomeMonstroExibido, 0, linhaAtual++, Grapchics.AMARELO_CLARO);
+					
+					Grapchics.desenhaTTF(nomeMonstroExibido, 0, linhaAtual, Grapchics.AMARELO_CLARO);
+					desenhaMonstroElementos(monstroEquipe, linhaAtual, nomeMonstroExibido);
+					linhaAtual++;
+					
 					batalhaAtiva.setMonstroMostrado(monstroEquipe);
 				}else{
-					nomeMonstroExibido = monstroEquipe.getNomeMonstro()+" Nv"+monstroEquipe.getNivelAtual();
-					Grapchics.desenhaTTF(nomeMonstroExibido, 0, linhaAtual++, Grapchics.BRANCO_CLARO);
+					Grapchics.desenhaTTF(nomeMonstroExibido, 0, linhaAtual, Grapchics.BRANCO_CLARO);
+					desenhaMonstroElementos(monstroEquipe, linhaAtual, nomeMonstroExibido);
+					linhaAtual++;
 				}
 			}else{
 				if (Input.getCursorY() == linhaAtual){

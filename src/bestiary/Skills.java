@@ -109,7 +109,7 @@ public class Skills {
 		this.poderHabilidade = skillRequerida.getPoderHabilidade();
 		this.precisãoBase = skillRequerida.getPrecisaoBase();
 		this.precisãoAtual = skillRequerida.getPrecisaoAtual();
-		this.estaminaHabilidade = skillRequerida.getEnergiaHabilidade();
+		this.estaminaHabilidade = skillRequerida.getEstaminaHabilidade();
 		this.recargaHabilidade = skillRequerida.getRecargaHabilidade();
 		this.recargaAtual = skillRequerida.getRecargaAtual();
 		this.recargaPendente = skillRequerida.isRecargaPendente();
@@ -216,10 +216,10 @@ public class Skills {
 		return precisãoAtual;
 	}
 
-	public int getEnergiaHabilidade(){
+	public int getEstaminaHabilidade(){
 		return estaminaHabilidade;
 	}
-
+	
 	public int getRecargaHabilidade(){
 		return recargaHabilidade;
 	}

@@ -31,7 +31,7 @@ public class StatusRegenSta extends StatusBase {
     public void checar(Monsters alvo){
 		if (duraçãoAtual <= 0) return;
 		
-		int regen = (int) Math.ceil(alvo.getEstaminaAtual() * (10 / 100.0));
+		int regen = (int) Math.ceil(alvo.getEstaminaAtual() * (15 / 100.0));
 		alvo.ganharEstamina(regen);
     }
 	

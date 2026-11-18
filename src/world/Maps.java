@@ -12,6 +12,7 @@ import manager.NPCManager;
 import manager.SaveManager;
 
 import modes.arena.ArenaMode;
+import modes.assembly.AssemblyMode;
 
 import util.GameState;
 import util.Grapchics;
@@ -34,6 +35,7 @@ public final class Maps implements GameState{
 	public static final char PORTAL = '-';
 	public static final char AGUA = '~';
 	public static final char ARVORE = '^';
+	public static final char ASSEMBLEIA = '´';
 	
 	private static Map<String, String> mapasExistentes; 
 	private static String mapaAtual, mapaInicial, mapaVerificado;
@@ -118,6 +120,9 @@ public final class Maps implements GameState{
 		if (Maps.ehEvento(Maps.mapaAtual, Player.getJogadorX(), Player.getJogadorY()) == Maps.ARENA){
 			mudarEstado(new ArenaMode());
 		}
+		if (Maps.ehEvento(Maps.mapaAtual, Player.getJogadorX(), Player.getJogadorY()) == Maps.ASSEMBLEIA){
+			mudarEstado(new AssemblyMode());
+		}
 	}
 	
 	private void teclaShift(){}
@@ -200,6 +205,9 @@ public final class Maps implements GameState{
 					case Maps.ARVORE:
 					Grapchics.desenhaTela((char)249, jColuna, iLinha, Grapchics.VERDE_CLARO);
 					break;
+					case Maps.ASSEMBLEIA:
+					Grapchics.desenhaTela((char)38, jColuna, iLinha, Grapchics.AMARELO_CLARO);
+					break;
 					}
 				}
 			}
@@ -268,6 +276,8 @@ public final class Maps implements GameState{
 			return Maps.BATALHA;
 		}else if (linhaAlvo.charAt(jogadorX) == Maps.ARENA){
 			return Maps.ARENA;
+		}else if (linhaAlvo.charAt(jogadorX) == Maps.ASSEMBLEIA){
+			return Maps.ASSEMBLEIA;
 		}
 		return '.';
 	}

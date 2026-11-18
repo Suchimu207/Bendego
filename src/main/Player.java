@@ -5,22 +5,26 @@ public final class Player {
 	private static final int TORNEIOS_VENCIDOS_INICIAL = 0;
 	private static final int POSIÇÃO_INICIAL_X = 19;
 	private static final int POSIÇÃO_INICIAL_Y = 9;
+	private static final int REPUTAÇÃO_INICIAL = 1;
+	private static final int REPUTAÇÃO_MÁXIMA = 5000;
 	
 	private static Player jogador;
     private int ouro;
 	private int torneiosVencidos;
+	private int reputaçãoAtual;
 	private int jogadorX, jogadorY;
 	
-	private Player(int ouro, int torneiosVencidos, int jogadorX, int jogadorY){
+	private Player(int ouro, int torneiosVencidos, int jogadorX, int jogadorY, int reputaçãoAtual){
 		this.ouro = ouro;
 		this.torneiosVencidos = torneiosVencidos;
+		this.reputaçãoAtual = reputaçãoAtual;
 		this.jogadorX = jogadorX;
 		this.jogadorY = jogadorY;
 	}
 	
 	public static void setarJogador(){
 		jogador = new Player(OURO_INICIAL, TORNEIOS_VENCIDOS_INICIAL,
-		POSIÇÃO_INICIAL_X, POSIÇÃO_INICIAL_Y);
+		POSIÇÃO_INICIAL_X, POSIÇÃO_INICIAL_Y, REPUTAÇÃO_INICIAL);
 	}
 	
 	public static int getJogadorX(){
@@ -82,6 +86,20 @@ public final class Player {
 	public static void registrarTorneioVencido(){
 		jogador.torneiosVencidos += 1;
 	}
-		
+	
+	public static int getReputaçãoAtual(){
+		if (jogador == null) return -1;
+		return jogador.reputaçãoAtual;
+	}
+	
+	public static void setReputaçãoAtual(int reputaçãoAtual){
+		jogador.reputaçãoAtual = reputaçãoAtual;
+	}
+	
+	public static void aumentarReputação(int ganhoReputação){
+		if (jogador.reputaçãoAtual >= REPUTAÇÃO_MÁXIMA) return;
+		jogador.reputaçãoAtual += ganhoReputação;
+	}
+	
 	//===
 }

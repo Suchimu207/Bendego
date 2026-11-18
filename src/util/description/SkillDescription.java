@@ -30,9 +30,9 @@ public class SkillDescription {
             if (skillMostrada.getPrecisaoBase() > 0){
                 Grapchics.desenhaTTF("Precisão: " + skillMostrada.getPrecisaoBase(), 0, posiçãoLinhaSkillsAtivas++, Grapchics.BRANCO_CLARO, Grapchics.FUNDO);
             }
-            if (skillMostrada.getEnergiaHabilidade() > 0){
+            if (skillMostrada.getEstaminaHabilidade() > 0){
                 Grapchics.desenhaTTF("Estamina: ", 0, posiçãoLinhaSkillsAtivas, Grapchics.BRANCO_CLARO, Grapchics.FUNDO);
-				Grapchics.desenhaTTF(""+skillMostrada.getEnergiaHabilidade(), 10, posiçãoLinhaSkillsAtivas++, Grapchics.AZUL_CLARO, Grapchics.FUNDO);
+				Grapchics.desenhaTTF(""+skillMostrada.getEstaminaHabilidade(), 10, posiçãoLinhaSkillsAtivas++, Grapchics.AZUL_CLARO, Grapchics.FUNDO);
             }
             if (skillMostrada.getRecargaHabilidade() > 0){
                 Grapchics.desenhaTTF("Recarga: " + skillMostrada.getRecargaHabilidade(), 0, posiçãoLinhaSkillsAtivas++, Grapchics.BRANCO_CLARO, Grapchics.FUNDO);

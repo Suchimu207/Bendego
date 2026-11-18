@@ -109,8 +109,9 @@ public final class Battle implements GameState{
 				if (campoBatalha != null){
 					BattleResult.desenhaTelaVitoria(
 					campoBatalha.getTropaExp(), 
-					campoBatalha.getTropaOuro());
-				}else BattleResult.desenhaTelaVitoria(0,0);
+					campoBatalha.getTropaOuro(),
+					campoBatalha.getResultadosExp());
+				}else BattleResult.desenhaTelaVitoria(0,0,new ArrayList<>());
 				break;
 			case DERROTA:
 				BattleResult.desenhaTelaDerrota();
@@ -172,7 +173,7 @@ public final class Battle implements GameState{
 	
 	private void teclaEnter(){
 		if (subEstadoAtual == SubEstadosBatalha.VITORIA){
-			Audio.pararMusicaFadeOut(2100);
+			Audio.pararMusicaFadeOut(2210);
 			Terminal.mudarEstado(Terminal.getEstadoAnterior());
 		}
 		if (subEstadoAtual == SubEstadosBatalha.DERROTA){
